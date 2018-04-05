@@ -35,6 +35,7 @@ class DrawGUIs extends JFrame {
 		// Create two buttons
 		JButton clear = new JButton("Clear");
 		JButton quit = new JButton("Quit");
+		JButton auto = new JButton("Auto");
 
 		// Set a LayoutManager, and add the choosers and buttons to the window.
 		this.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
@@ -44,6 +45,7 @@ class DrawGUIs extends JFrame {
 		this.add(color_chooser);
 		this.add(clear);
 		this.add(quit);
+		this.add(auto);
 
 		// Here's a local class used for action listeners for the buttons
 		class DrawActionListener implements ActionListener {
@@ -61,147 +63,7 @@ class DrawGUIs extends JFrame {
 		// Define action listener adapters that connect the buttons to the app
 		clear.addActionListener(new DrawActionListener("clear"));
 		quit.addActionListener(new DrawActionListener("quit"));
-
-		// this class determines how mouse events are to be interpreted,
-		// depending on the shape mode currently set
-		class ShapeManager implements ItemListener {
-			DrawGUIs gui;
-
-			abstract class ShapeDrawer extends MouseAdapter implements MouseMotionListener {
-				public void mouseMoved(MouseEvent e) {
-					/* ignore */ }
-			}
-
-			// if this class is active, the mouse is interpreted as a pen
-			class ScribbleDrawer extends ShapeDrawer {
-				int lastx, lasty;
-
-				public void mousePressed(MouseEvent e) {
-					lastx = e.getX();
-					lasty = e.getY();
-				}
-
-				public void mouseDragged(MouseEvent e) {
-					Graphics g = gui.getGraphics();
-					int x = e.getX(), y = e.getY();
-					g.setColor(gui.color);
-					g.setPaintMode();
-					g.drawLine(lastx, lasty, x, y);
-					lastx = x;
-					lasty = y;
-				}
-			}
-
-			// if this class is active, rectangles are drawn
-			class RectangleDrawer extends ShapeDrawer {
-				int pressx, pressy;
-				int lastx = -1, lasty = -1;
-
-				// mouse pressed => fix first corner of rectangle
-				public void mousePressed(MouseEvent e) {
-					pressx = e.getX();
-					pressy = e.getY();
-				}
-
-				// mouse released => fix second corner of rectangle
-				// and draw the resulting shape
-				public void mouseReleased(MouseEvent e) {
-					Graphics g = gui.getGraphics();
-					if (lastx != -1) {
-						// first undraw a rubber rect
-						g.setXORMode(gui.color);
-						g.setColor(gui.getBackground());
-						doDraw(pressx, pressy, lastx, lasty, g);
-						lastx = -1;
-						lasty = -1;
-					}
-					// these commands finish the rubberband mode
-					g.setPaintMode();
-					g.setColor(gui.color);
-					// draw the finel rectangle
-					doDraw(pressx, pressy, e.getX(), e.getY(), g);
-				}
-
-				// mouse released => temporarily set second corner of rectangle
-				// draw the resulting shape in "rubber-band mode"
-				public void mouseDragged(MouseEvent e) {
-					Graphics g = gui.getGraphics();
-					// these commands set the rubberband mode
-					g.setXORMode(gui.color);
-					g.setColor(gui.getBackground());
-					if (lastx != -1) {
-						// first undraw previous rubber rect
-						doDraw(pressx, pressy, lastx, lasty, g);
-
-					}
-					lastx = e.getX();
-					lasty = e.getY();
-					// draw new rubber rect
-					doDraw(pressx, pressy, lastx, lasty, g);
-				}
-
-				public void doDraw(int x0, int y0, int x1, int y1, Graphics g) {
-					// calculate upperleft and width/height of rectangle
-					int x = Math.min(x0, x1);
-					int y = Math.min(y0, y1);
-					int w = Math.abs(x1 - x0);
-					int h = Math.abs(y1 - y0);
-					// draw rectangle
-					g.drawRect(x, y, w, h);
-				}
-			}
-
-			// if this class is active, ovals are drawn
-			class OvalDrawer extends RectangleDrawer {
-				public void doDraw(int x0, int y0, int x1, int y1, Graphics g) {
-					int x = Math.min(x0, x1);
-					int y = Math.min(y0, y1);
-					int w = Math.abs(x1 - x0);
-					int h = Math.abs(y1 - y0);
-					// draw oval instead of rectangle
-					g.drawOval(x, y, w, h);
-				}
-			}
-
-			ScribbleDrawer scribbleDrawer = new ScribbleDrawer();
-			RectangleDrawer rectDrawer = new RectangleDrawer();
-			OvalDrawer ovalDrawer = new OvalDrawer();
-			ShapeDrawer currentDrawer;
-
-			public ShapeManager(DrawGUIs itsGui) {
-				gui = itsGui;
-				// default: scribble mode
-				currentDrawer = scribbleDrawer;
-				// activate scribble drawer
-				gui.addMouseListener(currentDrawer);
-				gui.addMouseMotionListener(currentDrawer);
-			}
-
-			// reset the shape drawer
-			public void setCurrentDrawer(ShapeDrawer l) {
-				if (currentDrawer == l)
-					return;
-
-				// deactivate previous drawer
-				gui.removeMouseListener(currentDrawer);
-				gui.removeMouseMotionListener(currentDrawer);
-				// activate new drawer
-				currentDrawer = l;
-				gui.addMouseListener(currentDrawer);
-				gui.addMouseMotionListener(currentDrawer);
-			}
-
-			// user selected new shape => reset the shape mode
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getItem().equals("Scribble")) {
-					setCurrentDrawer(scribbleDrawer);
-				} else if (e.getItem().equals("Rectangle")) {
-					setCurrentDrawer(rectDrawer);
-				} else if (e.getItem().equals("Oval")) {
-					setCurrentDrawer(ovalDrawer);
-				}
-			}
-		}
+		auto.addActionListener(new DrawActionListener("auto"));
 
 		shape_chooser.addItemListener(new ShapeManager(this));
 
@@ -236,4 +98,14 @@ class DrawGUIs extends JFrame {
 		// this.show(); //chg
 		this.setVisible(true); // ++
 	}
+	
+	/**
+	 * 
+	 */
+	public void drawOval(int x, int y, int x2, int y2) {
+		ShapeManager shapeManager = new ShapeManager(this);
+		OvalDrawer ovalDrawer = new OvalDrawer(shapeManager);
+		ovalDrawer.doDraw(x, y, x2, y2, shapeManager.gui.getGraphics());		
+	}
+
 }

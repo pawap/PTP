@@ -17,7 +17,7 @@ public class Draw {
 		window = new DrawGUIs(this);
 	}
 
-	protected JFrame window; // chg
+	protected DrawGUIs window; // chg
 
 	/**
 	 * This is the application method that processes commands sent by the GUI
@@ -32,6 +32,17 @@ public class Draw {
 		} else if (command.equals("quit")) { // quit the application
 			window.dispose(); // close the GUI
 			System.exit(0); // and exit.
+		} else if (command.equals("auto")) { // quit the application
+			autoDraw();
 		}
+	}
+	public void drawOval(Point upper_left, Point lower_right) {
+		window.drawOval(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
+	} 
+	public void autoDraw() {
+		// TODO Auto-generated method stub
+		drawOval(new Point(100,200), new Point (400,400));
+		drawOval(new Point(300,300), new Point (500,500));
+		drawOval(new Point(700,600), new Point (1000,800));
 	}
 }
