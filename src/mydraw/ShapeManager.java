@@ -21,8 +21,8 @@ class ShapeManager implements ItemListener {
 		// default: scribble mode
 		currentDrawer = scribbleDrawer;
 		// activate scribble drawer
-		gui.addMouseListener(currentDrawer);
-		gui.addMouseMotionListener(currentDrawer);
+		gui.drawingArea.addMouseListener(currentDrawer);
+		gui.drawingArea.addMouseMotionListener(currentDrawer);
 	}
 
 	// reset the shape drawer
@@ -31,12 +31,12 @@ class ShapeManager implements ItemListener {
 			return;
 
 		// deactivate previous drawer
-		gui.removeMouseListener(currentDrawer);
-		gui.removeMouseMotionListener(currentDrawer);
+		gui.drawingArea.removeMouseListener(currentDrawer);
+		gui.drawingArea.removeMouseMotionListener(currentDrawer);
 		// activate new drawer
 		currentDrawer = l;
-		gui.addMouseListener(currentDrawer);
-		gui.addMouseMotionListener(currentDrawer);
+		gui.drawingArea.addMouseListener(currentDrawer);
+		gui.drawingArea.addMouseMotionListener(currentDrawer);
 	}
 
 	// user selected new shape => reset the shape mode
@@ -48,6 +48,13 @@ class ShapeManager implements ItemListener {
 		} else if (e.getItem().equals("Oval")) {
 			setCurrentDrawer(ovalDrawer);
 		}
+	}
+	// TODO fix structure to make this unnecessary
+	public void dispose(){
+		gui.drawingArea.removeMouseListener(currentDrawer);
+		gui.drawingArea.removeMouseMotionListener(currentDrawer);
+		gui = null;
+		
 	}
 }
 

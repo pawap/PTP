@@ -15,6 +15,7 @@ public class Draw {
 	/** Application constructor: create an instance of our GUI class */
 	public Draw() {
 		window = new DrawGUIs(this);
+		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
 
 	protected DrawGUIs window; // chg
@@ -26,9 +27,10 @@ public class Draw {
 		if (command.equals("clear")) { // clear the GUI window
 			// It would be more modular to include this functionality in the GUI
 			// class itself. But for demonstration purposes, we do it here.
-			Graphics g = window.getGraphics();
+			Graphics g = window.drawingArea.image.getGraphics(); //get Graphics for Image
 			g.setColor(window.getBackground());
 			g.fillRect(0, 0, window.getSize().width, window.getSize().height);
+			window.repaint();
 		} else if (command.equals("quit")) { // quit the application
 			window.dispose(); // close the GUI
 			System.exit(0); // and exit.
@@ -36,13 +38,17 @@ public class Draw {
 			autoDraw();
 		}
 	}
+	public Image getDrawing(){
+		return window.getDrawing();
+	}
+	
 	public void drawOval(Point upper_left, Point lower_right) {
 		window.drawOval(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
 	} 
 	public void autoDraw() {
 		// TODO Auto-generated method stub
-		drawOval(new Point(100,200), new Point (400,400));
-		drawOval(new Point(300,300), new Point (500,500));
-		drawOval(new Point(700,600), new Point (1000,800));
+		drawOval(new Point(100,200), new Point (200,300));
+		drawOval(new Point(10,10), new Point (100,200));
+		drawOval(new Point(70,100), new Point (300,200));
 	}
 }

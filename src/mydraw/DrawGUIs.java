@@ -3,13 +3,16 @@ package mydraw;
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+
 import javax.swing.*; //++
 
 /** This class implements the GUI for our application */
 class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
 	Color color;
-
+	JDrawingArea drawingArea; 
+	
 	/**
 	 * The GUI constructor does all the work of creating the GUI and setting up
 	 * event listeners. Note the use of local and anonymous classes.
@@ -19,6 +22,7 @@ class DrawGUIs extends JFrame {
 		app = application; // Remember the application reference
 		color = Color.black; // the current drawing color
 
+		
 		// selector for drawing modes
 		Choice shape_chooser = new Choice();
 		shape_chooser.add("Scribble");
@@ -37,16 +41,35 @@ class DrawGUIs extends JFrame {
 		JButton quit = new JButton("Quit");
 		JButton auto = new JButton("Auto");
 
-		// Set a LayoutManager, and add the choosers and buttons to the window.
-		this.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-		this.add(new JLabel("Shape:"));
-		this.add(shape_chooser);
-		this.add(new JLabel("Color:"));
-		this.add(color_chooser);
-		this.add(clear);
-		this.add(quit);
-		this.add(auto);
-
+		// Set a LayoutManager, and add the choosers and buttons to the menu.
+		JPanel menu = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+		menu.add(new JLabel("Shape:"));
+		menu.add(shape_chooser);
+		menu.add(new JLabel("Color:"));
+		menu.add(color_chooser);
+		menu.add(clear);
+		menu.add(quit);
+		menu.add(auto);
+		
+		// Setup DrawingArea with a new BufferedImage, Default BGColor: white
+		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB));
+		drawingArea.image.getGraphics().setColor(Color.WHITE);
+		drawingArea.image.getGraphics().fillRect(0,0, 400, 320);
+		drawingArea.setBackground(Color.WHITE);
+		
+		// New Layout for Frame. TODO elaborate
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.weighty = 0;
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(menu, c);
+		c.weighty = 1;
+		c.gridx = 0;
+		c.gridy = 1;
+		this.add(drawingArea, c);
+		
 		// Here's a local class used for action listeners for the buttons
 		class DrawActionListener implements ActionListener {
 			private String command;
@@ -93,8 +116,8 @@ class DrawGUIs extends JFrame {
 		});
 
 		// Finally, set the size of the window, and pop it up
-		this.setSize(500, 400);
-		this.setBackground(Color.white);
+		this.setSize(500, 400);		
+		this.setBackground(Color.white); // TODO obsolete. remove 
 		// this.show(); //chg
 		this.setVisible(true); // ++
 	}
@@ -105,7 +128,19 @@ class DrawGUIs extends JFrame {
 	public void drawOval(int x, int y, int x2, int y2) {
 		ShapeManager shapeManager = new ShapeManager(this);
 		OvalDrawer ovalDrawer = new OvalDrawer(shapeManager);
-		ovalDrawer.doDraw(x, y, x2, y2, shapeManager.gui.getGraphics());		
+		Graphics g = drawingArea.image.getGraphics();
+		g.setColor(this.color);
+		ovalDrawer.doDraw(x, y, x2, y2, g);
+		shapeManager.dispose();
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public Image getDrawing() {
+		
+		return drawingArea.image;
 	}
 
 }

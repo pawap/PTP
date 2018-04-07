@@ -8,7 +8,7 @@ class RectangleDrawer extends ShapeDrawer {
 	/**
 	 * 
 	 */
-	private final ShapeManager shapeManager;
+	protected final ShapeManager shapeManager;
 
 	/**
 	 * @param shapeManager
@@ -29,7 +29,7 @@ class RectangleDrawer extends ShapeDrawer {
 	// mouse released => fix second corner of rectangle
 	// and draw the resulting shape
 	public void mouseReleased(MouseEvent e) {
-		Graphics g = this.shapeManager.gui.getGraphics();
+		Graphics g = this.shapeManager.gui.drawingArea.image.getGraphics(); //draw on image
 		if (lastx != -1) {
 			// first undraw a rubber rect
 			g.setXORMode(this.shapeManager.gui.color);
@@ -48,10 +48,12 @@ class RectangleDrawer extends ShapeDrawer {
 	// mouse released => temporarily set second corner of rectangle
 	// draw the resulting shape in "rubber-band mode"
 	public void mouseDragged(MouseEvent e) {
-		Graphics g = this.shapeManager.gui.getGraphics();
+		Graphics g = this.shapeManager.gui.drawingArea.image.getGraphics();
 		// these commands set the rubberband mode
 		g.setXORMode(this.shapeManager.gui.color);
 		g.setColor(this.shapeManager.gui.getBackground());
+		System.out.println("BG: " + this.shapeManager.gui.getBackground());
+		System.out.println("Clr: " + this.shapeManager.gui.color);
 		if (lastx != -1) {
 			// first undraw previous rubber rect
 			doDraw(pressx, pressy, lastx, lasty, g);
@@ -71,5 +73,6 @@ class RectangleDrawer extends ShapeDrawer {
 		int h = Math.abs(y1 - y0);
 		// draw rectangle
 		g.drawRect(x, y, w, h);
+		this.shapeManager.gui.drawingArea.repaint();
 	}
 }
