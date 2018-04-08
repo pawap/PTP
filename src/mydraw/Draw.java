@@ -98,7 +98,10 @@ public class Draw {
 		polyLine.add(new Point(70,100));
 		polyLine.add(new Point (300,200));
 		drawPolyLine(polyLine);
-	
+		
+		drawRectangle(new Point(100,200), new Point (200,100));
+		drawRectangle(new Point(70,100), new Point (300,300));
+		drawRectangle(new Point(10,10),new Point (200,300));
 	}
 	
 }
