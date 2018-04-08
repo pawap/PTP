@@ -3,6 +3,7 @@ package mydraw;
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.*; //++
@@ -47,7 +48,10 @@ public class Draw {
 			} 
 		} else if (command.equals("load")) { // load saved image
 			try {
-				window.setDrawing(readImage("bull.bmp"));
+				Image orgImg = readImage("bull.bmp");
+				Image img = new BufferedImage(orgImg.getWidth(null), orgImg.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+				img.getGraphics().drawImage(orgImg, 0, 0, null);
+				window.setDrawing(img);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
