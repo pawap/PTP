@@ -164,6 +164,21 @@ class DrawGUIs extends JFrame {
 		ovalDrawer.doDraw(x, y, x2, y2, g);
 		shapeManager.dispose();
 	}
+	
+	protected JDrawingArea getDrawingArea() {
+		return drawingArea;
+	}
+	
+	protected void setFGColor(Color c) {
+		color = c;
+	}
+	
+	/**
+	 * @return the active color as a string 
+	 */
+	protected Color getFGColor() {
+		return color;
+	}
 
 	/**
 	 * 
@@ -180,91 +195,6 @@ class DrawGUIs extends JFrame {
 	public void setDrawing(Image img) {
 		drawingArea.image = img;
 		drawingArea.repaint();
-	}
-	
-	/**
-	 * @return the active color as a string 
-	 */
-	public String getFGColor() {
-		return color.toString();
-	}
-	
-	/**
-	 * Sets the foreground color to the desired color.
-	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
-	 * @throws ColorException
-	 */
-	public void setFGColor(String new_color) throws ColorException{
-		setAColor(color, new_color);			
-	}
-	
-	/**
-	 * Sets the background color to the desired color.
-	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
-	 * @throws ColorException
-	 */
-	public void setBGColor (String new_color) throws ColorException{
-		Color bgcolor = Color.white;
-		setAColor(bgcolor, new_color);
-		drawingArea.setBackground(bgcolor);
-	}
-	
-	/**
-	 * helper method for setting colors.
-	 * @param c_to_set the Color you want changed
-	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
-	 * @throws ColorException
-	 */
-	private void setAColor(Color c_to_set, String new_color) throws ColorException{
-		List<String> color_pool = new ArrayList<String>();
-		String n_c = new_color.toLowerCase();
-				
-		try {
-			color_pool = Files.readAllLines(new File("color_pool").toPath());
-		}
-		catch (IOException e) 
-		{
-			System.out.println(e.toString());
-		}
-		
-		if (color_pool.contains(n_c)) {
-			switch (n_c) {
-			case "black": c_to_set = Color.black;
-						  break;				
-			case "green": c_to_set = Color.green;
-				          break;
-			case "red":   c_to_set = Color.red;
-				          break;
-			case "blue":  c_to_set = Color.blue;
-				          break;
-			default:      System.out.println("setAColor did something stupid.");
-			}
-		}
-		else {
-			throw new ColorException();
-		}
-	}
-	
-	/**
-	 * @return the width of the drawing area
-	 */
-	public int getWidth() {
-		return drawingArea.getWidth();
-	}
-	
-	/**
-	 * @return the height of the drawing area
-	 */
-	public int getHeight() {
-		return drawingArea.getHeight();
-	}
-	
-	/**
-	 * 
-	 * @return the background color as String
-	 */
-	public String getBGColor() {
-		return drawingArea.getBackground().toString();
 	}
 
 	public void drawPolyLine(List<Point> points) {
