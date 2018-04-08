@@ -36,10 +36,12 @@ class DrawGUIs extends JFrame {
 		color_chooser.add("Red");
 		color_chooser.add("Blue");
 
-		// Create two buttons
+		// Create menu buttons
 		JButton clear = new JButton("Clear");
 		JButton quit = new JButton("Quit");
 		JButton auto = new JButton("Auto");
+		JButton save = new JButton("Save");
+		JButton load = new JButton("Load");
 
 		// Set a LayoutManager, and add the choosers and buttons to the menu.
 		JPanel menu = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
@@ -50,11 +52,13 @@ class DrawGUIs extends JFrame {
 		menu.add(clear);
 		menu.add(quit);
 		menu.add(auto);
+		menu.add(save);
+		menu.add(load);
 		
 		// Setup DrawingArea with a new BufferedImage, Default BGColor: white
 		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB));
-		drawingArea.image.getGraphics().setColor(Color.WHITE);
-		drawingArea.image.getGraphics().fillRect(0,0, 400, 320);
+		drawingArea.getImageGraphics().setColor(Color.WHITE);
+		drawingArea.getImageGraphics().fillRect(0,0, 400, 320);
 		drawingArea.setBackground(Color.WHITE);
 		
 		// New Layout for Frame. TODO elaborate
@@ -87,7 +91,9 @@ class DrawGUIs extends JFrame {
 		clear.addActionListener(new DrawActionListener("clear"));
 		quit.addActionListener(new DrawActionListener("quit"));
 		auto.addActionListener(new DrawActionListener("auto"));
-
+		save.addActionListener(new DrawActionListener("save"));
+		load.addActionListener(new DrawActionListener("load"));
+		
 		shape_chooser.addItemListener(new ShapeManager(this));
 
 		class ColorItemListener implements ItemListener {
@@ -142,5 +148,12 @@ class DrawGUIs extends JFrame {
 		
 		return drawingArea.image;
 	}
-
+	
+	/**
+	 * 
+	 */
+	public void setDrawing(Image img) {
+		drawingArea.image = img;
+		drawingArea.repaint();
+	}
 }

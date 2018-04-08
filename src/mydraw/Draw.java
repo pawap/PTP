@@ -3,6 +3,8 @@ package mydraw;
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*; //++
 
 /** The application class. Processes high-level commands sent by GUI */
@@ -34,12 +36,36 @@ public class Draw {
 		} else if (command.equals("quit")) { // quit the application
 			window.dispose(); // close the GUI
 			System.exit(0); // and exit.
-		} else if (command.equals("auto")) { // quit the application
+		} else if (command.equals("auto")) { // draw auto-generated pic
 			autoDraw();
+		} else if (command.equals("save")) { // save current image as bitmap
+			try {
+				writeImage(getDrawing(),"bull.bmp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		} else if (command.equals("load")) { // load saved image
+			try {
+				window.setDrawing(readImage("bull.bmp"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
+	// TODO add javadoc & other comments!
+	
 	public Image getDrawing(){
 		return window.getDrawing();
+	}
+	
+	public void writeImage(Image image, String filename) throws IOException{
+			BMPFile.write(filename, image);		
+	}
+	
+	public Image readImage(String filename) throws IOException{
+		return BMPFile.read(filename);		
 	}
 	
 	public void drawOval(Point upper_left, Point lower_right) {
