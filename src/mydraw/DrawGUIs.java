@@ -170,12 +170,33 @@ class DrawGUIs extends JFrame {
 	}
 	
 	/**
-	 * 
-	 * @param new_color one of the colors defined in the color_pool file. Not case sensitive.
+	 * Sets the foreground color to the desired color.
+	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
 	 * @throws ColorException
 	 */
 	public void setFGColor(String new_color) throws ColorException{
-		List<String> color_pool;
+		setAColor(color, new_color);			
+	}
+	
+	/**
+	 * Sets the background color to the desired color.
+	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
+	 * @throws ColorException
+	 */
+	public void setBGColor (String new_color) throws ColorException{
+		Color bgcolor = Color.white;
+		setAColor(bgcolor, new_color);
+		drawingArea.setBackground(bgcolor);
+	}
+	
+	/**
+	 * helper method for setting colors.
+	 * @param c_to_set the Color you want changed
+	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
+	 * @throws ColorException
+	 */
+	private void setAColor(Color c_to_set, String new_color) throws ColorException{
+		List<String> color_pool = new ArrayList<String>();
 		String n_c = new_color.toLowerCase();
 				
 		try {
@@ -188,20 +209,37 @@ class DrawGUIs extends JFrame {
 		
 		if (color_pool.contains(n_c)) {
 			switch (n_c) {
-			case "black": color = Color.black;
+			case "black": c_to_set = Color.black;
 						  break;				
-			case "green": color = Color.green;
+			case "green": c_to_set = Color.green;
 				          break;
-			case "red":   color = Color.red;
+			case "red":   c_to_set = Color.red;
 				          break;
-			case "blue":  color = Color.blue;
+			case "blue":  c_to_set = Color.blue;
 				          break;
-			default:      System.out.println("setFGColor did something stupid.");
+			default:      System.out.println("setAColor did something stupid.");
 			}
 		}
 		else {
 			throw new ColorException();
 		}
-			
+	}
+	
+	/**
+	 * @return the width of the drawing area
+	 */
+	public int getWidth() {
+		return drawingArea.getWidth();
+	}
+	
+	/**
+	 * @return the height of the drawing area
+	 */
+	public int getHeight() {
+		return drawingArea.getHeight();
+	}
+	
+	public String getBGColor() {
+		return drawingArea.getBackground().toString();
 	}
 }
