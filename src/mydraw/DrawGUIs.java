@@ -134,7 +134,27 @@ class DrawGUIs extends JFrame {
 	}
 	
 	/**
-	 * 
+	 * draws a rectangle onto the drawingArea.
+	 * @param x coordinate of the rectangle's upper left corner
+	 * @param y coordinate of the rectangle's upper left corner
+	 * @param x2 coordinate of the rectangle's bottom right corner
+	 * @param y2 coordinate of the rectangle's bottom right corner
+	 */
+	public void drawRectangle(int x, int y, int x2, int y2) {
+		ShapeManager shapeManager = new ShapeManager(this);
+		RectangleDrawer rectDrawer = new RectangleDrawer(shapeManager);
+		Graphics g = drawingArea.image.getGraphics();
+		g.setColor(this.color);
+		rectDrawer.doDraw(x, y, x2, y2, g);
+		shapeManager.dispose();
+	}
+	
+	/**
+	 * draws an oval between two points onto the drawingArea.
+	 * @param x coordinate of the first point
+	 * @param y coordinate of the first point
+	 * @param x2 coordinate of the first point
+	 * @param y2 coordinate of the first point
 	 */
 	public void drawOval(int x, int y, int x2, int y2) {
 		ShapeManager shapeManager = new ShapeManager(this);
@@ -239,6 +259,10 @@ class DrawGUIs extends JFrame {
 		return drawingArea.getHeight();
 	}
 	
+	/**
+	 * 
+	 * @return the background color as String
+	 */
 	public String getBGColor() {
 		return drawingArea.getBackground().toString();
 	}

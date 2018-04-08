@@ -68,6 +68,10 @@ public class Draw {
 		return MyBMPFile.read(filename);		
 	}
 	
+	public void drawRectangle(Point upper_left, Point lower_right) {
+		window.drawRectangle(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
+	}
+	
 	public void drawOval(Point upper_left, Point lower_right) {
 		window.drawOval(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
 	} 
