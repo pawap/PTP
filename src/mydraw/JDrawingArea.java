@@ -34,4 +34,8 @@ public class JDrawingArea extends JPanel {
 	public Graphics getImageGraphics() {
 		return image.getGraphics();
 	}
+	
+	public Image getImage() {
+		return image;
+	}
 }
