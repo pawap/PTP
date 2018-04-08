@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.swing.*; //++
 
@@ -79,11 +80,25 @@ public class Draw {
 	public void drawOval(Point upper_left, Point lower_right) {
 		window.drawOval(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
 	} 
+	
+	public void drawPolyLine(java.util.List<Point> points) {
+		window.drawPolyLine(points);		
+	}
 	public void autoDraw() {
 		// TODO Auto-generated method stub
 		drawOval(new Point(100,200), new Point (200,300));
 		drawOval(new Point(10,10), new Point (100,200));
 		drawOval(new Point(70,100), new Point (300,200));
+
+		LinkedList<Point> polyLine = new LinkedList<Point>();
+		polyLine.add(new Point(100,200));
+		polyLine.add(new Point (200,300));
+		polyLine.add(new Point(10,10));
+		polyLine.add(new Point (100,200));
+		polyLine.add(new Point(70,100));
+		polyLine.add(new Point (300,200));
+		drawPolyLine(polyLine);
+	
 	}
 	
 }
