@@ -16,6 +16,6 @@ class OvalDrawer extends RectangleDrawer {
 		int h = Math.abs(y1 - y0);
 		// draw oval instead of rectangle
 		g.drawOval(x, y, w, h);
-		this.shapeManager.gui.drawingArea.repaint();
+		this.shapeManager.getDrawingArea().repaint();
 	}
 }

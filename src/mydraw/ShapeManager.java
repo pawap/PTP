@@ -10,7 +10,7 @@ import java.awt.event.MouseMotionListener;
 // depending on the shape mode currently set
 class ShapeManager implements ItemListener {
 	DrawGUIs gui;
-
+	// TODO fix cyclic reference
 	ScribbleDrawer scribbleDrawer = new ScribbleDrawer(this);
 	RectangleDrawer rectDrawer = new RectangleDrawer(this);
 	OvalDrawer ovalDrawer = new OvalDrawer(this);
@@ -49,7 +49,24 @@ class ShapeManager implements ItemListener {
 			setCurrentDrawer(ovalDrawer);
 		}
 	}
-	// TODO fix structure to make this unnecessary
+	/**
+	 * Get this shapeManager's gui. TODO implement with listener(?) to eliminate cyclic reference
+	 * 
+	 * @return
+	 */
+	public DrawGUIs getGui() {
+		return gui;
+	}
+	
+	/**
+	 * Get the drawingArea of this shapeManager's gui.
+	 * @return
+	 */
+	public JDrawingArea getDrawingArea() {
+		return gui.drawingArea;
+	}
+	
+		// TODO fix structure to make this unnecessary
 	public void dispose(){
 		gui.drawingArea.removeMouseListener(currentDrawer);
 		gui.drawingArea.removeMouseMotionListener(currentDrawer);

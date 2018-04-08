@@ -23,4 +23,12 @@ public class JDrawingArea extends JPanel {
         g.drawImage(image, 0, 0, this);
         
    }
+	/**
+	 * Get Graphics Instance of the image
+	 * 
+	 * @return
+	 */
+	public Graphics getImageGraphics() {
+		return image.getGraphics();
+	}
 }

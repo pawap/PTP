@@ -25,12 +25,12 @@ class ScribbleDrawer extends ShapeDrawer {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		Graphics g = this.shapeManager.gui.drawingArea.image.getGraphics();
+		Graphics g = this.shapeManager.getDrawingArea().getImageGraphics();
 		int x = e.getX(), y = e.getY();
 		g.setColor(this.shapeManager.gui.color);
 		g.setPaintMode();
 		g.drawLine(lastx, lasty, x, y);
-		this.shapeManager.gui.drawingArea.repaint();
+		this.shapeManager.getDrawingArea().repaint();
 		lastx = x;
 		lasty = y;
 	}

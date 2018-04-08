@@ -27,7 +27,7 @@ public class Draw {
 		if (command.equals("clear")) { // clear the GUI window
 			// It would be more modular to include this functionality in the GUI
 			// class itself. But for demonstration purposes, we do it here.
-			Graphics g = window.drawingArea.image.getGraphics(); //get Graphics for Image
+			Graphics g = window.getDrawing().getGraphics(); //get Graphics for Image
 			g.setColor(window.getBackground());
 			g.fillRect(0, 0, window.getSize().width, window.getSize().height);
 			window.repaint();
