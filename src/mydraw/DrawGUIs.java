@@ -60,11 +60,11 @@ class DrawGUIs extends JFrame {
 		drawingArea.getImageGraphics().setColor(Color.WHITE);
 		drawingArea.getImageGraphics().fillRect(0,0, 400, 320);
 		drawingArea.setBackground(Color.WHITE);
+		drawingArea.setLayout(new BorderLayout());
 		
 		// New Layout for Frame. TODO elaborate
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		
+		GridBagConstraints c = new GridBagConstraints();		
 		c.weighty = 0;
 		c.gridx = 0;
 		c.gridy = 0;
