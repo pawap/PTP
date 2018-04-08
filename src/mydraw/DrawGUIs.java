@@ -4,6 +4,11 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*; //++
 
@@ -155,5 +160,48 @@ class DrawGUIs extends JFrame {
 	public void setDrawing(Image img) {
 		drawingArea.image = img;
 		drawingArea.repaint();
+	}
+	
+	/**
+	 * @return the active color as a string 
+	 */
+	public String getFGColor() {
+		return color.toString();
+	}
+	
+	/**
+	 * 
+	 * @param new_color one of the colors defined in the color_pool file. Not case sensitive.
+	 * @throws ColorException
+	 */
+	public void setFGColor(String new_color) throws ColorException{
+		List<String> color_pool;
+		String n_c = new_color.toLowerCase();
+				
+		try {
+			color_pool = Files.readAllLines(new File("color_pool").toPath());
+		}
+		catch (IOException e) 
+		{
+			System.out.println(e.toString());
+		}
+		
+		if (color_pool.contains(n_c)) {
+			switch (n_c) {
+			case "black": color = Color.black;
+						  break;				
+			case "green": color = Color.green;
+				          break;
+			case "red":   color = Color.red;
+				          break;
+			case "blue":  color = Color.blue;
+				          break;
+			default:      System.out.println("setFGColor did something stupid.");
+			}
+		}
+		else {
+			throw new ColorException();
+		}
+			
 	}
 }
