@@ -189,4 +189,16 @@ class DrawGUIs extends JFrame {
 		drawingArea.image = img;
 		drawingArea.repaint();
 	}
+
+	public void drawPolyLine(List<Point> points) {
+		Graphics g = drawingArea.getImageGraphics();
+		g.setColor(color);
+		Point currentPoint = points.get(0);
+		for (Point point: points) {
+			g.drawLine(currentPoint.x,currentPoint.y,point.x, point.y);
+			currentPoint = point;
+		}
+		drawingArea.repaint();
+		
+	}
 }
