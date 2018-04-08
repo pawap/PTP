@@ -61,11 +61,11 @@ public class Draw {
 	}
 	
 	public void writeImage(Image image, String filename) throws IOException{
-			BMPFile.write(filename, image);		
+			MyBMPFile.write(filename, image);		
 	}
 	
 	public Image readImage(String filename) throws IOException{
-		return BMPFile.read(filename);		
+		return MyBMPFile.read(filename);		
 	}
 	
 	public void drawOval(Point upper_left, Point lower_right) {
