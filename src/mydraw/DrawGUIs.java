@@ -3,6 +3,7 @@ package mydraw;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import javax.swing.*; //++
 
 /** This class implements the GUI for our application */

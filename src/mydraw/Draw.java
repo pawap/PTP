@@ -4,15 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-<<<<<<< HEAD
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-=======
 import java.util.LinkedList;
 
 import javax.swing.*; //++
->>>>>>> branch 'master' of https://github.com/pawap/PTP/
+
 
 /** The application class. Processes high-level commands sent by GUI */
 public class Draw {
