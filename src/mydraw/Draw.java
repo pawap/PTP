@@ -77,4 +77,5 @@ public class Draw {
 		drawOval(new Point(10,10), new Point (100,200));
 		drawOval(new Point(70,100), new Point (300,200));
 	}
+	
 }
