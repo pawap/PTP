@@ -1,12 +1,12 @@
 package mydraw;
 
-import java.applet.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-
-import javax.swing.*; //++
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 /** The application class. Processes high-level commands sent by GUI */
 public class Draw {
@@ -85,5 +85,94 @@ public class Draw {
 		drawOval(new Point(10,10), new Point (100,200));
 		drawOval(new Point(70,100), new Point (300,200));
 	}
+	
+		/**
+	 * @return the width of the drawing area
+	 */
+	public int getWidth() {
+		JDrawingArea drawingArea = window.getDrawingArea();
+		return drawingArea.getImage().getWidth(drawingArea);
+	}
+	
+	/**
+	 * @return the height of the drawing area
+	 */
+	public int getHeight() {
+		JDrawingArea drawingArea = window.getDrawingArea();
+		return drawingArea.getImage().getHeight(drawingArea);
+	}
+	
+	/**
+	 * @return the active color as a string 
+	 */
+	public String getFGColor() {
+		return window.getFGColor().toString();
+	}
+	
+	/**
+	 * @return the background color as a string 
+	 */
+	public String getBGColor() {
+		return window.getDrawingArea().getBackground().toString();
+	}
+	
+	/**
+	 * Sets the foreground color to the desired color.
+	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
+	 * @throws ColorException
+	 */
+	public void setFGColor(String new_color) throws ColorException{
+		Color fgColor = Color.black;
+		setAColor(fgColor, new_color);
+		window.setFGColor(fgColor);		
+	}
+	
+	/**
+	 * Sets the foreground color to the desired color.
+	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
+	 * @throws ColorException
+	 */
+	public void setBGColor(String new_color) throws ColorException{
+		Color bgColor = Color.white;
+		setAColor(bgColor, new_color);
+		window.getDrawingArea().setBackground(bgColor);
+	}
+	
+	/**
+	 * helper method for setting colors.
+	 * @param c_to_set the Color you want changed
+	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
+	 * @throws ColorException
+	 */
+	private void setAColor(Color c_to_set, String new_color) throws ColorException{
+		List<String> color_pool = new ArrayList<String>();
+		String n_c = new_color.toLowerCase();
+				
+		try {
+			color_pool = Files.readAllLines(new File("color_pool").toPath());
+		}
+		catch (IOException e) 
+		{
+			System.out.println(e.toString());
+		}
+		
+		if (color_pool.contains(n_c)) {
+			switch (n_c) {
+			case "black": c_to_set = Color.black;
+						  break;				
+			case "green": c_to_set = Color.green;
+				          break;
+			case "red":   c_to_set = Color.red;
+				          break;
+			case "blue":  c_to_set = Color.blue;
+				          break;
+			default:      System.out.println("setAColor did something stupid.");
+			}
+		}
+		else {
+			throw new ColorException();
+		}
+	}
+	
 	
 }

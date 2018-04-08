@@ -1,15 +1,8 @@
 package mydraw;
 
-import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.*; //++
 
 /** This class implements the GUI for our application */
