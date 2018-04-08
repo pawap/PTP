@@ -3,6 +3,8 @@ package mydraw;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.*; //++
 
@@ -42,6 +44,8 @@ class DrawGUIs extends JFrame {
 		JButton save = new JButton("Save");
 		JButton load = new JButton("Load");
 
+		
+		
 		// Set a LayoutManager, and add the choosers and buttons to the menu.
 		JPanel menu = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 		menu.add(new JLabel("Shape:"));
@@ -55,12 +59,27 @@ class DrawGUIs extends JFrame {
 		menu.add(load);
 		
 		// Setup DrawingArea with a new BufferedImage, Default BGColor: white
-		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB));
+		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB), new Dimension (400,320));
 		drawingArea.getImageGraphics().setColor(Color.WHITE);
 		drawingArea.getImageGraphics().fillRect(0,0, 400, 320);
 		drawingArea.setBackground(Color.WHITE);
 		drawingArea.setLayout(new BorderLayout());
 		
+		JSizeMenu sizeMenu = new JSizeMenu(new Dimension(400,500));
+		menu.add(sizeMenu);
+		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName() == "size") {
+				Dimension size = (Dimension) evt.getNewValue();
+				System.out.println(""+evt.getPropertyName());
+				app.setHeight((int) size.getHeight());
+				app.setWidth((int) size.getWidth());
+				}
+			}
+			
+		});
 		// New Layout for Frame. TODO elaborate
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();		

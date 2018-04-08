@@ -194,6 +194,22 @@ public class Draw {
 			throw new ColorException();
 		}
 	}
+
+	public void setHeight(int height) {
+		BufferedImage newImg = new BufferedImage(this.getWidth(), height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = newImg.getGraphics();
+		g.setColor(Color.WHITE);
+		g.fillRect(0,0,getWidth(), height);
+		g.drawImage(window.drawingArea.image,0,0,null);
+		window.drawingArea.image = newImg;
+		window.drawingArea.repaint();
+		
+	}
+
+	public void setWidth(int width) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }
