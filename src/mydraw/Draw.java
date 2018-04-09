@@ -38,7 +38,7 @@ public class Draw {
 			// It would be more modular to include this functionality in the GUI
 			// class itself. But for demonstration purposes, we do it here.
 			Graphics g = window.getDrawing().getGraphics(); //get Graphics for Image
-			g.setColor(window.getBackground());
+			g.setColor(window.getBgColor());
 			g.fillRect(0, 0, window.getSize().width, window.getSize().height);
 			window.repaint();
 		} else if (command.equals("quit")) { // quit the application
