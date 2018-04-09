@@ -9,7 +9,7 @@ import javax.swing.*; //++
 /** This class implements the GUI for our application */
 class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
-	Color color;
+	Color color, bgColor;
 	JDrawingArea drawingArea; 
 	
 	/**
@@ -20,6 +20,7 @@ class DrawGUIs extends JFrame {
 		super("Draw"); // Create the window
 		app = application; // Remember the application reference
 		color = Color.black; // the current drawing color
+		bgColor = Color.white; //the background color
 
 		
 		// selector for drawing modes
@@ -127,6 +128,14 @@ class DrawGUIs extends JFrame {
 		this.setVisible(true); // ++
 	}
 	
+	public Color getBgColor() {
+		return bgColor;
+	}
+
+	public void setBgColor(Color bgColor) {
+		this.bgColor = bgColor;
+	}
+
 	/**
 	 * draws a rectangle onto the drawingArea.
 	 * @param x coordinate of the rectangle's upper left corner
@@ -201,5 +210,15 @@ class DrawGUIs extends JFrame {
 		}
 		drawingArea.repaint();
 		
+	}
+
+	public void redraw() {
+		BufferedImage newImg = new BufferedImage(app.getWidth(), app.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = newImg.getGraphics();
+		g.setColor(bgColor);
+		g.fillRect(0,0, app.getWidth(), app.getHeight());
+		g.drawImage(drawingArea.image,0,0,null);
+		drawingArea.image = newImg;
+		drawingArea.repaint();		
 	}
 }

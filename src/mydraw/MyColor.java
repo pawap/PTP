@@ -37,7 +37,7 @@ public enum MyColor {
 		}
 		else {
 			System.out.println(col);
-			throw new ColorException();
+			throw new ColorException(col + " is not a valid color");
 		}
 	}
 }
