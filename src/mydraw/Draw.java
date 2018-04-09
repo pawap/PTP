@@ -24,11 +24,11 @@ public class Draw {
 	/** Application constructor: create an instance of our GUI class */
 	public Draw() {
 		window = new DrawGUIs(this);
+
 		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
 
 	protected DrawGUIs window; // chg
-	private int height, width;
 
 	/**
 	 * This is the application method that processes commands sent by the GUI
@@ -97,9 +97,9 @@ public class Draw {
 			drawOval(new Point(100,200), new Point (200,300));
 			setFGColor("rEd");
 			drawOval(new Point(10,10), new Point (100,200));
-			setFGColor("black");
+			setFGColor("Blue");
 			drawOval(new Point(70,100), new Point (300,200));
-			setFGColor("blue");
+			setFGColor("blACK");
 			LinkedList<Point> polyLine = new LinkedList<Point>();
 			polyLine.add(new Point(100,200));
 			polyLine.add(new Point (200,300));
@@ -127,8 +127,7 @@ public class Draw {
 	}
 
 	public void setWidth(int new_width) {
-		width = new_width;
-		window.redraw();
+		window.redraw(new_width, getHeight());
 	}
 
 	/**
@@ -139,8 +138,7 @@ public class Draw {
 		return drawingArea.getImage().getHeight(drawingArea);
 	}
 	public void setHeight(int new_height) {
-		height = new_height;
-		window.redraw();
+		window.redraw(getWidth(), new_height);
 	}
 
 	/**
@@ -167,7 +165,7 @@ public class Draw {
 	}
 
 	/**
-	 * Sets the background color to the desired color.
+	 * Sets the background color to the desired color and changes each pixel that has the old color to the new one.
 	 * @param new_color one of the colors defined in the color_pool file as a String. Not case sensitive.
 	 * @throws ColorException
 	 */
@@ -185,20 +183,20 @@ public class Draw {
 		int B = window.getBgColor().getBlue();
 		int A = window.getBgColor().getAlpha();
 		int[] new_col_array = {new_col.getRed(), new_col.getGreen(), new_col.getBlue(), new_col.getAlpha()};
-				
+
 		g.fillRect(0,0, getWidth(), getHeight());
 		g.drawImage(drawingArea.image,0,0,null);
-		
-		for (int x = minX; x < raster.getWidth() + minX; ++x) {
+
+		for (int x = minX; x < raster.getWidth() + minX; ++x) {//check each pixel and change its color if needed
 			for (int y = minY; y < raster.getHeight() + minY; ++y) {
 				int[] dish = new int[4];
 				raster.getPixel(x, y, dish);
-				if (dish[0] == R && dish[1] == R && dish[2] == R && dish[3] == A) {
+				if (dish[0] == R && dish[1] == G && dish[2] == B && dish[3] == A) {
 					raster.setPixel(x, y, new_col_array);
 				}
 			}
 		}
-		
+
 		window.setBgColor(new_col);
 		drawingArea.image = newImg;
 		drawingArea.repaint();

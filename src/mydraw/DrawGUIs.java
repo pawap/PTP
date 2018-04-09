@@ -3,6 +3,8 @@ package mydraw;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.*; //++
 
@@ -11,7 +13,7 @@ class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
 	Color color, bgColor;
 	JDrawingArea drawingArea; 
-	
+
 	/**
 	 * The GUI constructor does all the work of creating the GUI and setting up
 	 * event listeners. Note the use of local and anonymous classes.
@@ -22,7 +24,7 @@ class DrawGUIs extends JFrame {
 		color = Color.black; // the current drawing color
 		bgColor = Color.white; //the background color
 
-		
+
 		// selector for drawing modes
 		Choice shape_chooser = new Choice();
 		shape_chooser.add("Scribble");
@@ -43,6 +45,8 @@ class DrawGUIs extends JFrame {
 		JButton save = new JButton("Save");
 		JButton load = new JButton("Load");
 
+
+
 		// Set a LayoutManager, and add the choosers and buttons to the menu.
 		JPanel menu = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 		menu.add(new JLabel("Shape:"));
@@ -54,14 +58,29 @@ class DrawGUIs extends JFrame {
 		menu.add(auto);
 		menu.add(save);
 		menu.add(load);
-		
+
 		// Setup DrawingArea with a new BufferedImage, Default BGColor: white
-		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB));
-		drawingArea.getImageGraphics().setColor(Color.WHITE);
+		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB), new Dimension (400,320));
+		drawingArea.getImageGraphics().setColor(bgColor);
 		drawingArea.getImageGraphics().fillRect(0,0, 400, 320);
-		drawingArea.setBackground(Color.WHITE);
+		drawingArea.setBackground(bgColor);
 		drawingArea.setLayout(new BorderLayout());
-		
+
+		JSizeMenu sizeMenu = new JSizeMenu(new Dimension(400,500));
+		menu.add(sizeMenu);
+		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName() == "size") {
+					Dimension size = (Dimension) evt.getNewValue();
+					System.out.println(""+evt.getPropertyName());
+					app.setHeight((int) size.getHeight());
+					app.setWidth((int) size.getWidth());
+				}
+			}
+
+		});
 		// New Layout for Frame. TODO elaborate
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();		
@@ -73,7 +92,7 @@ class DrawGUIs extends JFrame {
 		c.gridx = 0;
 		c.gridy = 1;
 		this.add(drawingArea, c);
-		
+
 		// Here's a local class used for action listeners for the buttons
 		class DrawActionListener implements ActionListener {
 			private String command;
@@ -93,7 +112,7 @@ class DrawGUIs extends JFrame {
 		auto.addActionListener(new DrawActionListener("auto"));
 		save.addActionListener(new DrawActionListener("save"));
 		load.addActionListener(new DrawActionListener("load"));
-		
+
 		shape_chooser.addItemListener(new ShapeManager(this));
 
 		class ColorItemListener implements ItemListener {
@@ -122,12 +141,12 @@ class DrawGUIs extends JFrame {
 		});
 
 		// Finally, set the size of the window, and pop it up
-		this.setSize(500, 400);		
+		this.setSize(1000, 400);		
 		this.setBackground(Color.white); // TODO obsolete. remove 
 		// this.show(); //chg
 		this.setVisible(true); // ++
 	}
-	
+
 	public Color getBgColor() {
 		return bgColor;
 	}
@@ -151,7 +170,7 @@ class DrawGUIs extends JFrame {
 		rectDrawer.doDraw(x, y, x2, y2, g);
 		shapeManager.dispose();
 	}
-	
+
 	/**
 	 * draws an oval between two points onto the drawingArea.
 	 * @param x coordinate of the first point
@@ -167,15 +186,15 @@ class DrawGUIs extends JFrame {
 		ovalDrawer.doDraw(x, y, x2, y2, g);
 		shapeManager.dispose();
 	}
-	
+
 	protected JDrawingArea getDrawingArea() {
 		return drawingArea;
 	}
-	
+
 	protected void setFGColor(Color c) {
 		color = c;
 	}
-	
+
 	/**
 	 * @return the active color as a string 
 	 */
@@ -188,10 +207,10 @@ class DrawGUIs extends JFrame {
 	 * @return 
 	 */
 	public Image getDrawing() {
-		
+
 		return drawingArea.image;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -209,14 +228,15 @@ class DrawGUIs extends JFrame {
 			currentPoint = point;
 		}
 		drawingArea.repaint();
-		
+
 	}
 
-	public void redraw() {
-		BufferedImage newImg = new BufferedImage(app.getWidth(), app.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	public void redraw(int w, int h) {
+		BufferedImage newImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = newImg.getGraphics();
-		g.setColor(bgColor);
-		g.fillRect(0,0, app.getWidth(), app.getHeight());
+		drawingArea.setSize(w, h);
+		this.validate();
+		g.fillRect(0,0, w, h);
 		g.drawImage(drawingArea.image,0,0,null);
 		drawingArea.image = newImg;
 		drawingArea.repaint();		
