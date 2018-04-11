@@ -37,7 +37,14 @@ class DrawGUIs extends JFrame {
 		color_chooser.add("Green");
 		color_chooser.add("Red");
 		color_chooser.add("Blue");
-
+		
+		Choice bg_color_chooser = new Choice();
+		bg_color_chooser.add("White");
+		bg_color_chooser.add("Black");
+		bg_color_chooser.add("Green");
+		bg_color_chooser.add("Red");
+		bg_color_chooser.add("Blue");
+		
 		// Create menu buttons
 		JButton clear = new JButton("Clear");
 		JButton quit = new JButton("Quit");
@@ -53,6 +60,8 @@ class DrawGUIs extends JFrame {
 		menu.add(shape_chooser);
 		menu.add(new JLabel("Color:"));
 		menu.add(color_chooser);
+		menu.add(new JLabel("BGColor:"));
+		menu.add(bg_color_chooser);
 		menu.add(clear);
 		menu.add(quit);
 		menu.add(auto);
@@ -65,7 +74,8 @@ class DrawGUIs extends JFrame {
 		drawingArea.getImageGraphics().fillRect(0,0, 400, 320);
 		drawingArea.setBackground(bgColor);
 		drawingArea.setLayout(new BorderLayout());
-
+		
+		// Setup SizeMenu
 		JSizeMenu sizeMenu = new JSizeMenu(new Dimension(400,500));
 		menu.add(sizeMenu);
 		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
@@ -129,10 +139,22 @@ class DrawGUIs extends JFrame {
 					color = Color.blue;
 				}
 			}
-		}
-
+		}		
+		
 		color_chooser.addItemListener(new ColorItemListener());
+		class BGColorItemListener implements ItemListener {
 
+			// user selected new bgColor => store new bgColor in DrawGUIs
+			public void itemStateChanged(ItemEvent e) {
+				try {
+					app.setBGColor((String) e.getItem());
+				} catch (ColorException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		bg_color_chooser.addItemListener(new BGColorItemListener());
 		// Handle the window close request similarly
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {

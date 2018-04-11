@@ -173,32 +173,46 @@ public class Draw {
 		//local vars
 		JDrawingArea drawingArea = window.getDrawingArea();
 		Color new_col = MyColor.stringToColor(new_color);
-		BufferedImage newImg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = newImg.getGraphics();
-		WritableRaster raster = newImg.getRaster();
-		int minX = raster.getMinX();
-		int minY = raster.getMinY();
-		int R = window.getBgColor().getRed();
-		int G = window.getBgColor().getGreen();
-		int B = window.getBgColor().getBlue();
-		int A = window.getBgColor().getAlpha();
-		int[] new_col_array = {new_col.getRed(), new_col.getGreen(), new_col.getBlue(), new_col.getAlpha()};
-
-		g.fillRect(0,0, getWidth(), getHeight());
-		g.drawImage(drawingArea.image,0,0,null);
-
-		for (int x = minX; x < raster.getWidth() + minX; ++x) {//check each pixel and change its color if needed
-			for (int y = minY; y < raster.getHeight() + minY; ++y) {
-				int[] dish = new int[4];
-				raster.getPixel(x, y, dish);
-				if (dish[0] == R && dish[1] == G && dish[2] == B && dish[3] == A) {
-					raster.setPixel(x, y, new_col_array);
+		
+		// simplified, at cost of efficiency
+		
+//		BufferedImage newImg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+//		Graphics g = newImg.getGraphics();
+//		WritableRaster raster = newImg.getRaster();
+//		int minX = raster.getMinX();
+//		int minY = raster.getMinY();
+//		int R = window.getBgColor().getRed();
+//		int G = window.getBgColor().getGreen();
+//		int B = window.getBgColor().getBlue();
+//		int A = window.getBgColor().getAlpha();
+//		int[] new_col_array = {A,R,G,B};
+//
+//		g.fillRect(0,0, getWidth(), getHeight());
+//		g.drawImage(drawingArea.image,0,0,null);
+//
+//		for (int x = minX; x < raster.getWidth() + minX; ++x) {//check each pixel and change its color if needed
+//			System.out.println("drawsetBG: "+x);
+//			for (int y = minY; y < raster.getHeight() + minY; ++y) {
+//				int[] dish;
+//				dish = raster.getPixel(x, y, new int[4]);
+//				if (dish[0] == A && dish[1] == R && dish[2] == G && dish[3] == B) {
+//					raster.setPixel(x, y, new_col_array);
+//				}
+//			}
+//		}
+		
+		// TODO this needs to go to the drawing area...
+		BufferedImage image = (BufferedImage) drawingArea.image; 
+		for (int x = 0; x < image.getWidth(null); ++x) {//check each pixel and change its color if needed
+			for (int y = 0; y < image.getHeight(null); ++y) {
+				if (image.getRGB(x, y) == window.getBgColor().getRGB()){
+					image.setRGB(x, y, new_col.getRGB());
+					
 				}
 			}
 		}
-
 		window.setBgColor(new_col);
-		drawingArea.image = newImg;
+		//drawingArea.image = image;
 		drawingArea.repaint();
 	}
 
