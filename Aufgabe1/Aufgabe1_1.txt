@@ -1,0 +1,57 @@
+2. Ablauf Operation quit
+
+Vorbedingungen: 
+Die beteiligten GUI-Elemente wurden erfolgreich instanziiert und ein DrawActionListener (erstellt mit “quit” als Konstruktor-Parameter) am quit-Button angemeldet.  Das Fenster ist sichtbar und erhält durch einen Mausklick den Focus. Die Operation wird durch einen User-Click auf den quit-Button ausgelöst.  
+
+Ablauf:
+Ein entsprechender Click löst das Senden eines ActionEvents an den anonymen DrawAction-Listener aus (i.e. dessen actionPerformed(...)-Methode wird aufgerufen). Dort wird wiederum die doCommand(...)-Methode des Draw-Objects angesprochen mit “quit” als Argument.
+In der doCommand(...)-Methode wird schließlich ein Fallunterscheidung bezüglich des übergebenen Parameters durchgeführt, sodass im entsprechenden elseif-Block das GUI-Fenster (über den Aufruf der dispose()-Methode der JFrame-Klasse) geschlossen wird, bevor das Programm beendet wird.
+
+Folgezustand: Das Programm wird nicht mehr ausgeführt.
+
+
+3. Ablauf Operation Farbauswahl
+
+Vorbedingungen: 
+Alle relevanten Klassen wurden erfolgreich instanziiert und ein ColorItemListener erfolgreich am Choice-Objekt der DrawGUIs-Instanz angemeldet. Fenster ist sichtbar und clickbar. 
+
+Ablauf:
+Eine Auswahl durch den User im DropDown-Menu für die Zeichenfarbe verursacht das Senden eines ItemEvents an den  ColorItemListener, der eine Fallunterscheidung bezüglich der getroffenen Wahl durchführt (indem der Rückgabewert der getItem()-Methode des ItemEvents überprüft wird). Die Instanzvariable color (vom Typ java.awt.Color) des DrawGUIs-Objects wird auf den Wert gesetzt, der der Farbwahl entspricht. 
+
+Folgezustand:
+Das color-Feld der DrawGUIs-Instanz hat nun den gewünschten Wert. In folgenden Zeichenvorgängen wird die neu gesetzte Farbe verwendet.
+
+
+4. Ablauf der Scribble Operation
+
+Vorbedingungen: 
+Alle relevanten Klassen wurden erfolgreich instanziiert und das currentDrawer-Feld des ShapeManager enthält eine Verweis auf eine gültige ScribbleDrawer-Instanz, die wiederum mit dem ShapeManager als Konstruktor-Parameter erschaffen wurde und erfolgreich als MouseMotionListener und MouseListener beim DrawGUIs-Objekt angemeldet ist. Fenster ist sichtbar/clickbar. Durch Drücken und Ziehen der Maus auf der freien Fläche des JFrames (i.e. der DrawGUIs) wird die Operation ausgelöst. 
+
+Ablauf:
+Beim Drücken der Maustaste wird die entsprechende Listener-Methode des ScribbleDrawers aufgerufen. In dieser wird zunächst die aktuelle Mausposition ermittelt und in zwei Feldern gespeichert. Wird die Maus nun minimal gezogen, so erfolgt ein Aufruf der anderen Listener-Methode. Hier wird die neue Mausposition ermittelt, eine Linie von der alten zur neuen Position gezeichnet (unter Verwendung einer zum JFrame gehörenden Graphics-Instanz) und schließlich die neue Mausposition in den Feldern des ScribbleDrawers vermerkt. Durch das kontinuierliche Zeichnen minimal kurzer Linien entsteht die Illusion vom freihändigen Malen.    
+
+Folgezustand: 
+Die gezeichneten Linien werden angezeigt, die Felder lastx, lasty des ScribbleDrawers enthalten die Position, an der der Mausbutton losgelassen wurde.  
+
+5. Ablauf Operation Rechteck zeichnen
+Vorbedingungen: 
+Wie oben, nur dass das currentDrawer-Feld des Shapemanagers auf einen RectangleDrawer verweist.  Durch Drücken und Ziehen, sowie Loslassen der Maus auf der freien Fläche des JFrames (i.e. der DrawGUIs) wird die Operation ausgelöst. 
+
+Ablauf:
+Auch hier wird beim Drücken der Maus auf der entsprechenden Fläche die entsprechende Listener-Methode des RectangleDrawers aufgerufen, in der die aktuelle Position der Maus vermerkt wird. Beim Ziehen wird kontinuierlich ein neues Rechteck von der anfänglichen zur aktuellen Position im Xor-Modus gezeichnet, wobei zuvor ggf. das zuletzt gezeichnete Rechteck durch erneutes übermalen entfernt wird.
+Wird die Maus losgelassen, so wird  in der mouseReleased-Methode() die aktuelle Position vermerkt, das zuletzt im Xor-Modus gezeichnete Rechteck entfernt und schließlich im Normal-Modus ein Rechteck von der anfänglichen zur aktuellen Position gezeichnet.
+
+Folgezustand: 
+Analog zu 4., cum grano salis.
+
+6. Ablauf Operation Shape wählen
+
+Vorbedingungen: 
+Klassen instanziiert, entsprechende Listener angemeldet. Fenster ist sicht-/clickbar. Auslöser ist das Treffen einer Auswahl im DropDown-Menu für die Formen durch den User. 
+
+Ablauf:
+Durch das Treffen der Auswahl wird die itemStateChanged(...)-Methode des ShapeManager aufgerufen. Hier wird über den übergebenen Parameter vom Typ ItemEvent die getroffene Wahl ermittelt und auf dieser Basis eine Fallunterscheidung durchgeführt, so dass die Methode setCurrentDrawer(...) mit einschlägigen ShapeDrawer als Parameter aufgerufen wird.
+Dort wird, falls die Wahl eine Änderung darstellt, der aktuelle ShapeDrawer vom der DrawGUIs-Instanz als Mouse(Motion)Listener abgemeldet und der neue angemeldet. Schließlich wird auch das Feld currentDrawer entsprechend gesetzt. 
+
+Folgezustand: 
+Falls eine Änderung vorgenommen wurde, ist der vorherige ShapeDrawer nicht mehr als Listener beim JFrame angemeldet, stattdessen der neue. MouseEvents auf der entsprechenden Fläche werden nun durch den neuen ShapeDrawer verarbeitet.   
