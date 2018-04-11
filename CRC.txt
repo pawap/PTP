@@ -1,0 +1,48 @@
+Class Draw
+    Unterklassen: -
+    Oberklassen: -
+    Aufgaben: Draw ist die Hauptklasse der Applikation und enthält die main-Methode. Sie erschafft eine DrawGUIs-Instanz und verarbeitet die Befehle, die von der GUI kommen.
+    Kollaborateure: DrawGUIs
+
+
+Class DrawGUIs
+    Unterklassen: -
+    Oberklassen: JFrame
+    Aufgaben: DrawGUIs baut die GUI aus awt/swing Komponenten und fügt die benötigten Listener hinzu. Ferner initialisiert sie die standard Farb- und Formzeichenoptionen, legt 
+              die Fenstergröße und Hintergrundfarbe fest und macht die GUI sichtbar. Alle weiteren benötigten Hilfsklassen werden in ihrem Konstruktor definiert.
+    Kollaborateure: Draw, JButton, FlowLayout, JLabel, DrawActionListener, Choice, ShapeDrawer, ShapeManager, ScribbleDrawer, RectangleDrawer, OvalDrawer, ColorItemlistener, 
+                    WindowAdapter
+
+
+Class DrawActionListener
+    Unterklassen: -
+    Oberklassen: -
+    Aufgaben: Dient als ActionListener an den beiden Buttons (Clear, Quit). Wird sein Button geclickt, gibt der DrawActionListener den zugehörigen befehl an die Draw Instanz weiter.
+    Kollaborateure: Draw, JButton
+
+
+Class ColorItemListener
+    Unterklassen: -
+    Oberklassen: -
+    Aufgaben: Die Klasse ColorItemListener kommt als ItemListener am Farbauswahl-Menü (Choice) zum Einsatz. Wählt ein User eine Farbe, so setzt der ColorItemListener direkt das Feld color, der
+              ihn umschließenden Klasse Draw auf die gewünschte Farbe, in der der User nun malen kann.
+    Kollaborateure: Choice, DrawGUIs
+
+
+Class ShapeManager
+    Unterklassen: -
+    Oberklassen: -
+    Aufgaben: Der ShapeManager dient als ItemListener am Formwahl-Menü (Choice). Im ShapeManager werden die abstrakte Klasse ShapeDrawer und alle ihre Unterklassen definiert.
+              Im Konstruktor wird eine ScribbleDrawer-Instanz erzeugt und als Mouse-/MouseMotionListener an die DrawGUIs-Instanz weitergereicht. Wird im Formwahlmenü eine neue
+              Form gewählt, fordert der Shapemanager die DrawGUIs auf, die nun obsoleten Listener zu entfernen und erschafft den zur gewünschten Form passenden, der an die
+              DrawGUIs weitergereicht wird.
+    Kollaborateure: Choice, DrawGUIs
+
+
+Class ScribbleDrawer
+    Unterklassen: -
+    Oberklassen: ShapeDrawer
+    Aufgaben: Der Standard ShapeDrawer. Ist der ScribbleDrawer als Listener an DrawGUIs angemeldet, werden MouseEvents wie im Pen-Modus gängiger Bildbearbeitungsapplikationen
+              interpretiert. Wird die Maus innerhalb des DrawGUIs Frames bei gedrückter Maustaste bewegt, merkt sich der ScribbleDrawer jeweils die letzte Zeigerposition und 
+              zeichnet, die Graphics-Instanz, die er sich von der DrawGUIs geholt hat nutzend, eine Linie von dort zur aktuellen Position.
+    Kollaborateure: DrawGUIs, Graphics
