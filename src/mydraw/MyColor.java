@@ -2,9 +2,21 @@ package mydraw;
 
 import java.awt.Color;
 
+/**
+ * MyColor offers access to a subset of the colors offered by java.awt.Color. It offers the possibility 
+ * to map strings containing valid color names to the respective colors via the stringToColor method.
+ * @author 6runge
+ *
+ */
 public enum MyColor {
 	BLACK, GREEN, RED, BLUE, WHITE; 
 
+	/**
+	 * checks if the input string can be mapped to one of the MyColor colors. The check is
+	 * case sensitive and the input string should consist of only uppercase letters.
+	 * @param str
+	 * @return true if the input matches a valid color
+	 */
 	public static boolean isAColor(String str) {
 		for (MyColor c : MyColor.values()) {
 			if (c.toString().equals(str)) {
@@ -13,6 +25,7 @@ public enum MyColor {
 		}
 		return false;
 	}
+
 
 	public static Color stringToColor(String str) throws ColorException{
 
@@ -30,7 +43,7 @@ public enum MyColor {
 			case "BLUE":  return Color.blue;
 
 			case "WHITE": return Color.white;
-			
+
 			default:      System.out.println("The String reads " + col);
 			return Color.pink;
 			}
@@ -39,6 +52,22 @@ public enum MyColor {
 			System.out.println(col);
 			throw new ColorException(col + " is not a valid color");
 		}
+	}
+
+	public static String colorToString(Color col) {
+		try {
+			for (MyColor mc : MyColor.values()) {
+				String col_str = mc.toString();
+
+				if (col.equals(stringToColor(col_str))) {
+					return col_str;
+				}
+			}
+		}
+		catch (ColorException e) {
+			System.out.println(e.toString());
+		}
+		return "not a valid color";
 	}
 }
 
