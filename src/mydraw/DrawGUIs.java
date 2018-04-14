@@ -272,4 +272,17 @@ class DrawGUIs extends JFrame {
 		drawingArea.image = newImg;
 		drawingArea.repaint();		
 	}
+
+	public void switchColor(Color new_col, Color bgColor2) {
+		BufferedImage image = (BufferedImage) drawingArea.image; 
+		for (int x = 0; x < image.getWidth(null); ++x) {//check each pixel and change its color if needed
+			for (int y = 0; y < image.getHeight(null); ++y) {
+				if (image.getRGB(x, y) == getBGColor().getRGB()){
+					image.setRGB(x, y, new_col.getRGB());
+					
+				}
+			}
+		}
+		
+	}
 }

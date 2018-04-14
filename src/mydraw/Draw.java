@@ -51,25 +51,34 @@ public class Draw {
 		} else if (command.equals("quit")) { // quit the application
 			window.dispose(); // close the GUI
 			System.exit(0); // and exit.
-		} else if (command.equals("auto")) { // draw auto-generated pic
+		} else if (command.equals("auto")) { // draw auto-generated image
 			autoDraw();
 		} else if (command.equals("save")) { // save current image as bitmap
-			try {
-				writeImage(getDrawing(),"bull.bmp");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+	        JFileChooser chooser = new JFileChooser();
+	        int result = chooser.showOpenDialog(null);
+	        if(result == JFileChooser.APPROVE_OPTION) {
+	        	try {
+					writeImage(getDrawing(),chooser.getSelectedFile().getAbsolutePath());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+	        }
+			
 		} else if (command.equals("load")) { // load saved image
-			try {
-				Image orgImg = readImage("bull.bmp");
-				Image img = new BufferedImage(orgImg.getWidth(null), orgImg.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-				img.getGraphics().drawImage(orgImg, 0, 0, null);
-				window.setImage(img);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	        JFileChooser chooser = new JFileChooser();
+	        int result = chooser.showOpenDialog(null);
+	        if(result == JFileChooser.APPROVE_OPTION) {
+				try {
+					Image orgImg = readImage(chooser.getSelectedFile().getAbsolutePath());
+					Image img = new BufferedImage(orgImg.getWidth(null), orgImg.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+					img.getGraphics().drawImage(orgImg, 0, 0, null);
+					window.setImage(img);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
 		}
 	}
 	// TODO add javadoc & other comments!
@@ -180,47 +189,8 @@ public class Draw {
 		//local vars
 		JDrawingArea drawingArea = window.getDrawingArea();
 		Color new_col = MyColor.stringToColor(new_color);
-		
-		// simplified, at cost of efficiency
-		
-//		BufferedImage newImg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-//		Graphics g = newImg.getGraphics();
-//		WritableRaster raster = newImg.getRaster();
-//		int minX = raster.getMinX(); 
-//		int minY = raster.getMinY();
-//		int R = window.getBgColor().getRed();
-//		int G = window.getBgColor().getGreen();
-//		int B = window.getBgColor().getBlue();
-//		int A = window.getBgColor().getAlpha();
-//		int[] new_col_array = {A,R,G,B};
-//
-//		g.fillRect(0,0, getWidth(), getHeight());
-//		g.drawImage(drawingArea.image,0,0,null);
-//
-//		for (int x = minX; x < raster.getWidth() + minX; ++x) {//check each pixel and change its color if needed
-//			System.out.println("drawsetBG: "+x);
-//			for (int y = minY; y < raster.getHeight() + minY; ++y) {
-//				int[] dish;
-//				dish = raster.getPixel(x, y, new int[4]);
-//				if (dish[0] == A && dish[1] == R && dish[2] == G && dish[3] == B) {
-//					raster.setPixel(x, y, new_col_array);
-//				}
-//			}
-//		}
-		
-		// TODO this needs to go to the drawing area...
-		BufferedImage image = (BufferedImage) drawingArea.image; 
-		for (int x = 0; x < image.getWidth(null); ++x) {//check each pixel and change its color if needed
-			for (int y = 0; y < image.getHeight(null); ++y) {
-				if (image.getRGB(x, y) == window.getBGColor().getRGB()){
-					image.setRGB(x, y, new_col.getRGB());
-					
-				}
-			}
-		}
+		window.switchColor(new_col, window.getBGColor());
 		window.setBGColor(new_col);
-		
-		//drawingArea.image = image;
 		drawingArea.repaint();
 	}
 
