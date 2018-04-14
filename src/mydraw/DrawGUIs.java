@@ -8,11 +8,17 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.*; //++
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
+
+
 /** This class implements the GUI for our application */
 class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
 	Color color, bgColor;
-	JDrawingArea drawingArea; 
+	JDrawingArea drawingArea;
+	JSizeMenu sizeMenu;
+	Choice bg_color_chooser;
 
 	/**
 	 * The GUI constructor does all the work of creating the GUI and setting up
@@ -38,7 +44,7 @@ class DrawGUIs extends JFrame {
 		color_chooser.add("Red");
 		color_chooser.add("Blue");
 		
-		Choice bg_color_chooser = new Choice();
+		bg_color_chooser = new Choice();
 		bg_color_chooser.add("White");
 		bg_color_chooser.add("Black");
 		bg_color_chooser.add("Green");
@@ -76,7 +82,7 @@ class DrawGUIs extends JFrame {
 		drawingArea.setLayout(new BorderLayout());
 		
 		// Setup SizeMenu
-		JSizeMenu sizeMenu = new JSizeMenu(new Dimension(400,500));
+		sizeMenu = new JSizeMenu(new Dimension(400,320));
 		menu.add(sizeMenu);
 		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
 
@@ -169,11 +175,14 @@ class DrawGUIs extends JFrame {
 		this.setVisible(true); // ++
 	}
 
-	public Color getBgColor() {
+	public Color getBGColor() {
 		return bgColor;
 	}
 
-	public void setBgColor(Color bgColor) {
+	public void setBGColor(Color bgColor) {
+		String colorStr = MyColor.colorToString(bgColor).toLowerCase();
+		colorStr = StringUtils.capitalize(colorStr);
+		bg_color_chooser.select(colorStr);
 		this.bgColor = bgColor;
 	}
 
@@ -218,7 +227,7 @@ class DrawGUIs extends JFrame {
 	}
 
 	/**
-	 * @return the active color as a string 
+	 * @return the active color as a Color 
 	 */
 	protected Color getFGColor() {
 		return color;
@@ -228,7 +237,7 @@ class DrawGUIs extends JFrame {
 	 * 
 	 * @return 
 	 */
-	public Image getDrawing() {
+	public Image getImage() {
 
 		return drawingArea.image;
 	}
@@ -236,7 +245,7 @@ class DrawGUIs extends JFrame {
 	/**
 	 * 
 	 */
-	public void setDrawing(Image img) {
+	public void setImage(Image img) {
 		drawingArea.image = img;
 		drawingArea.repaint();
 	}
@@ -253,7 +262,7 @@ class DrawGUIs extends JFrame {
 
 	}
 
-	public void redraw(int w, int h) {
+	public void resizeDrawingArea(int w, int h) {
 		BufferedImage newImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = newImg.getGraphics();
 		drawingArea.setSize(w, h);

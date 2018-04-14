@@ -16,6 +16,10 @@ import javax.swing.*; //++
 
 /** The application class. Processes high-level commands sent by GUI */
 public class Draw {
+	
+	protected String FGColor;
+	protected String BGColor;
+	
 	/** main entry point. Just create an instance of this application class */
 	public static void main(String[] args) {
 		new Draw();
@@ -24,7 +28,10 @@ public class Draw {
 	/** Application constructor: create an instance of our GUI class */
 	public Draw() {
 		window = new DrawGUIs(this);
-
+		
+		FGColor = "Black";
+		BGColor = "White";
+		
 		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
 
@@ -37,8 +44,8 @@ public class Draw {
 		if (command.equals("clear")) { // clear the GUI window
 			// It would be more modular to include this functionality in the GUI
 			// class itself. But for demonstration purposes, we do it here.
-			Graphics g = window.getDrawing().getGraphics(); //get Graphics for Image
-			g.setColor(window.getBgColor());
+			Graphics g = window.getImage().getGraphics(); //get Graphics for Image
+			g.setColor(window.getBGColor());
 			g.fillRect(0, 0, window.getSize().width, window.getSize().height);
 			window.repaint();
 		} else if (command.equals("quit")) { // quit the application
@@ -58,7 +65,7 @@ public class Draw {
 				Image orgImg = readImage("bull.bmp");
 				Image img = new BufferedImage(orgImg.getWidth(null), orgImg.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 				img.getGraphics().drawImage(orgImg, 0, 0, null);
-				window.setDrawing(img);
+				window.setImage(img);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -68,7 +75,7 @@ public class Draw {
 	// TODO add javadoc & other comments!
 
 	public Image getDrawing(){
-		return window.getDrawing();
+		return window.getImage();
 	}
 
 	public void writeImage(Image image, String filename) throws IOException{
@@ -122,37 +129,37 @@ public class Draw {
 	 * @return the width of the drawing area
 	 */
 	public int getWidth() {
-		JDrawingArea drawingArea = window.getDrawingArea();
-		return drawingArea.getImage().getWidth(drawingArea);
+		Image img = window.getImage();
+		return img.getWidth(null);
 	}
 
 	public void setWidth(int new_width) {
-		window.redraw(new_width, getHeight());
+		window.resizeDrawingArea(new_width, getHeight());
 	}
 
 	/**
 	 * @return the height of the drawing area
 	 */
 	public int getHeight() {
-		JDrawingArea drawingArea = window.getDrawingArea();
-		return drawingArea.getImage().getHeight(drawingArea);
+		Image img = window.getImage();
+		return img.getHeight(null);
 	}
 	public void setHeight(int new_height) {
-		window.redraw(getWidth(), new_height);
+		window.resizeDrawingArea(getWidth(), new_height);
 	}
 
 	/**
 	 * @return the active color as a string 
 	 */
 	public String getFGColor() {
-		return window.getFGColor().toString();
+		return MyColor.colorToString(window.getFGColor());
 	}
 
 	/**
 	 * @return the background color as a string 
 	 */
 	public String getBGColor() {
-		return window.getBgColor().toString();
+		return MyColor.colorToString(window.getBGColor());
 	}
 
 	/**
@@ -161,7 +168,7 @@ public class Draw {
 	 * @throws ColorException
 	 */
 	public void setFGColor(String new_color) throws ColorException{
-		window.setFGColor(MyColor.stringToColor(new_color));		
+		window.setFGColor(MyColor.stringToColor(new_color));
 	}
 
 	/**
@@ -179,7 +186,7 @@ public class Draw {
 //		BufferedImage newImg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 //		Graphics g = newImg.getGraphics();
 //		WritableRaster raster = newImg.getRaster();
-//		int minX = raster.getMinX();
+//		int minX = raster.getMinX(); 
 //		int minY = raster.getMinY();
 //		int R = window.getBgColor().getRed();
 //		int G = window.getBgColor().getGreen();
@@ -205,13 +212,14 @@ public class Draw {
 		BufferedImage image = (BufferedImage) drawingArea.image; 
 		for (int x = 0; x < image.getWidth(null); ++x) {//check each pixel and change its color if needed
 			for (int y = 0; y < image.getHeight(null); ++y) {
-				if (image.getRGB(x, y) == window.getBgColor().getRGB()){
+				if (image.getRGB(x, y) == window.getBGColor().getRGB()){
 					image.setRGB(x, y, new_col.getRGB());
 					
 				}
 			}
 		}
-		window.setBgColor(new_col);
+		window.setBGColor(new_col);
+		
 		//drawingArea.image = image;
 		drawingArea.repaint();
 	}
