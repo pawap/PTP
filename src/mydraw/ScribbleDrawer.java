@@ -46,7 +46,7 @@ class ScribbleDrawer extends ShapeDrawer {
 		}
 		g.setColor(gui.color);
 		g.setStroke(new BasicStroke(gui.pencilSize,                     // Line width
-                BasicStroke.CAP_ROUND,    // End-cap style
+                BasicStroke.CAP_ROUND,
                 BasicStroke.JOIN_ROUND));
 		g.setPaintMode();
 		g.drawLine(lastx, lasty, x, y);

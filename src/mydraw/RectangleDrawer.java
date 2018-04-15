@@ -1,6 +1,8 @@
 package mydraw;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
 // if this class is active, rectangles are drawn
@@ -29,7 +31,10 @@ class RectangleDrawer extends ShapeDrawer {
 	// mouse released => fix second corner of rectangle
 	// and draw the resulting shape
 	public void mouseReleased(MouseEvent e) {
-		Graphics g = this.shapeManager.getDrawingArea().getImageGraphics(); //draw on image
+		Graphics2D g = (Graphics2D) this.shapeManager.getDrawingArea().getImageGraphics(); //draw on image
+		g.setStroke(new BasicStroke(shapeManager.gui.pencilSize,                     // Line width
+                BasicStroke.CAP_ROUND,    // End-cap style
+                BasicStroke.JOIN_MITER));
 		if (lastx != -1) {
 			// first undraw a rubber rect
 			g.setXORMode(this.shapeManager.gui.color);
@@ -39,6 +44,7 @@ class RectangleDrawer extends ShapeDrawer {
 			lasty = -1;
 		}
 		// these commands finish the rubberband mode
+		
 		g.setPaintMode();
 		g.setColor(this.shapeManager.gui.color);
 		// draw the finel rectangle
@@ -48,7 +54,10 @@ class RectangleDrawer extends ShapeDrawer {
 	// mouse released => temporarily set second corner of rectangle
 	// draw the resulting shape in "rubber-band mode"
 	public void mouseDragged(MouseEvent e) {
-		Graphics g = this.shapeManager.getDrawingArea().getImageGraphics();
+		Graphics2D g = (Graphics2D) this.shapeManager.getDrawingArea().getImageGraphics();
+		g.setStroke(new BasicStroke(shapeManager.gui.pencilSize,                     // Line width
+                BasicStroke.CAP_ROUND,
+                BasicStroke.JOIN_MITER));
 		// these commands set the rubberband mode
 		g.setXORMode(this.shapeManager.gui.color);
 		g.setColor(this.shapeManager.gui.getBackground());
