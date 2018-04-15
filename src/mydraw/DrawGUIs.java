@@ -7,6 +7,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.*; //++
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.sun.xml.internal.ws.util.StringUtils;
 
@@ -16,6 +18,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
 	Color color, bgColor;
+	int pencilSize;
 	JDrawingArea drawingArea;
 	JSizeMenu sizeMenu;
 	Choice bg_color_chooser;
@@ -29,7 +32,7 @@ class DrawGUIs extends JFrame {
 		app = application; // Remember the application reference
 		color = Color.black; // the current drawing color
 		bgColor = Color.white; //the background color
-
+		pencilSize = 1; 
 
 		// selector for drawing modes
 		Choice shape_chooser = new Choice();
@@ -51,6 +54,12 @@ class DrawGUIs extends JFrame {
 		bg_color_chooser.add("Red");
 		bg_color_chooser.add("Blue");
 		
+		JSlider pencil_size_slider = new JSlider(1,20);
+		pencil_size_slider.setValue(pencilSize);
+		pencil_size_slider.setPaintTicks(true);
+		pencil_size_slider.setPaintLabels(true);
+		pencil_size_slider.setMajorTickSpacing(7);
+		pencil_size_slider.setMinorTickSpacing(1);
 		// Create menu buttons
 		JButton clear = new JButton("Clear");
 		JButton quit = new JButton("Quit");
@@ -61,18 +70,24 @@ class DrawGUIs extends JFrame {
 
 
 		// Set a LayoutManager, and add the choosers and buttons to the menu.
-		JPanel menu = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-		menu.add(new JLabel("Shape:"));
-		menu.add(shape_chooser);
-		menu.add(new JLabel("Color:"));
-		menu.add(color_chooser);
-		menu.add(new JLabel("BGColor:"));
-		menu.add(bg_color_chooser);
-		menu.add(clear);
-		menu.add(quit);
-		menu.add(auto);
-		menu.add(save);
-		menu.add(load);
+		JPanel menu = new JPanel(new GridLayout(2,1));
+		System.out.println(menu.getLocation());
+		JPanel toolMenu = new JPanel((new FlowLayout(FlowLayout.LEFT)));
+		toolMenu.add(pencil_size_slider);
+		toolMenu.add(new JLabel("Shape:"));
+		toolMenu.add(shape_chooser);
+		toolMenu.add(new JLabel("Color:"));
+		toolMenu.add(color_chooser);
+		toolMenu.add(new JLabel("BGColor:"));
+		toolMenu.add(bg_color_chooser);
+		toolMenu.add(clear);
+		JPanel imageMenu = new JPanel(new FlowLayout(FlowLayout.LEFT,5,1));
+		imageMenu.add(quit);
+		imageMenu.add(auto);
+		imageMenu.add(save);
+		imageMenu.add(load);
+		menu.add(toolMenu);
+		menu.add(imageMenu);
 
 		// Setup DrawingArea with a new BufferedImage, Default BGColor: white
 		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB), new Dimension (400,320));
@@ -83,7 +98,7 @@ class DrawGUIs extends JFrame {
 		
 		// Setup SizeMenu
 		sizeMenu = new JSizeMenu(new Dimension(400,320));
-		menu.add(sizeMenu);
+		imageMenu.add(sizeMenu);
 		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
 
 			@Override
@@ -101,9 +116,14 @@ class DrawGUIs extends JFrame {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();		
 		c.weighty = 0;
+		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.WEST;
 		this.add(menu, c);
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.CENTER;
 		c.weighty = 1;
 		c.gridx = 0;
 		c.gridy = 1;
@@ -161,6 +181,20 @@ class DrawGUIs extends JFrame {
 			}
 		}
 		bg_color_chooser.addItemListener(new BGColorItemListener());
+		
+		class SliderListener implements ChangeListener {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JSlider slider = (JSlider) e.getSource();
+				pencilSize = slider.getValue();
+				
+			}
+			
+		}
+		
+		pencil_size_slider.addChangeListener(new SliderListener());
+		
 		// Handle the window close request similarly
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -172,7 +206,9 @@ class DrawGUIs extends JFrame {
 		this.setSize(1000, 400);		
 		this.setBackground(Color.white); // TODO obsolete. remove 
 		// this.show(); //chg
+		this.pack();
 		this.setVisible(true); // ++
+		System.out.println(menu.getLocation());
 	}
 
 	public Color getBGColor() {

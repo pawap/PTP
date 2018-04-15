@@ -1,6 +1,8 @@
 package mydraw;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
@@ -32,7 +34,7 @@ class ScribbleDrawer extends ShapeDrawer {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		Graphics g = drawingArea.getImageGraphics();
+		Graphics2D g = (Graphics2D) drawingArea.getImageGraphics();
 		int x = e.getX();
 		int y = e.getY();
 		Point topLeft = drawingArea.getLocation();
@@ -43,6 +45,9 @@ class ScribbleDrawer extends ShapeDrawer {
 			return;
 		}
 		g.setColor(gui.color);
+		g.setStroke(new BasicStroke(gui.pencilSize,                     // Line width
+                BasicStroke.CAP_ROUND,    // End-cap style
+                BasicStroke.JOIN_ROUND));
 		g.setPaintMode();
 		g.drawLine(lastx, lasty, x, y);
 		drawingArea.repaint();
