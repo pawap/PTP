@@ -11,13 +11,16 @@ import java.awt.event.MouseMotionListener;
 class ShapeManager implements ItemListener {
 	DrawGUIs gui;
 	// TODO fix cyclic reference
-	ScribbleDrawer scribbleDrawer = new ScribbleDrawer(this);
-	RectangleDrawer rectDrawer = new RectangleDrawer(this);
-	OvalDrawer ovalDrawer = new OvalDrawer(this);
+	ScribbleDrawer scribbleDrawer;
+	RectangleDrawer rectDrawer;
+	OvalDrawer ovalDrawer;
 	ShapeDrawer currentDrawer;
 
 	public ShapeManager(DrawGUIs itsGui) {
 		gui = itsGui;
+		scribbleDrawer = new ScribbleDrawer(this);
+		rectDrawer = new RectangleDrawer(this);
+		ovalDrawer = new OvalDrawer(this);		
 		// default: scribble mode
 		currentDrawer = scribbleDrawer;
 		// activate scribble drawer
