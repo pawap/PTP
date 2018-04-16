@@ -5,16 +5,16 @@ package mydraw.test;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
-import mydraw.*;
-
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.IllegalArgumentException;
+
+import org.junit.Test;
+
+import mydraw.ColorException;
+import mydraw.Draw;
 
 /**
  * @author Paw
@@ -67,7 +67,10 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetHeight() {
-		fail("Not yet implemented");
+		Draw draw = new Draw();
+		assertTrue(draw.getHeight() > 0);
+		draw.setHeight(777);
+		assertEquals(draw.getHeight(),777);
 	}
 
 	/**
@@ -75,7 +78,19 @@ public class DrawTest {
 	 */
 	@Test
 	public void testSetHeight() {
-		fail("Not yet implemented");
+		Draw draw = new Draw();
+		draw.setHeight(555);
+		assertEquals(draw.getHeight(),555);
+		
+		try {
+			draw.setHeight(-1);
+			fail("No exception thrown for neg. Input");
+		} catch (IllegalArgumentException e) {
+			
+		} catch (Exception e) {
+			fail("Wrong exception thrown for inacceptable input.");
+		}
+		
 	}
 
 	/**
