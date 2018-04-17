@@ -34,6 +34,7 @@ public class DrawTest {
 		assertTrue(draw.getDrawing() instanceof Image);
 		assertEquals(draw.getDrawing().getHeight(null), draw.getHeight());
 		assertEquals(draw.getDrawing().getWidth(null), draw.getWidth());
+		
 		draw.drawRectangle(new Point(40, 30), new Point(100,120));
 		BufferedImage image = (BufferedImage) draw.getDrawing();
 		assertEquals(image.getRGB(40, 30), MyColor.stringToColor(draw.getFGColor()).getRGB());
@@ -222,6 +223,15 @@ public class DrawTest {
 	
 
 	}
+	/**
+	 * Helper method for comparing two images regarding their RGB-Content.
+	 * 
+	 * @param img Image 
+	 * @param referenceImg Image
+	 * @return int[] An Array, which is empty, if the two Images have the same RGB Content,
+	 * or contains 4 Values: [0],[1]: x,y coordinates of the first differing pixel encountered, 
+	 * [2]: color of the image, [3] color of the reference-image  
+	 */
 	private int[] comparePixels(Image img, Image referenceImg) {
 		int width = img.getWidth(null);
 		int height = img.getHeight(null);
