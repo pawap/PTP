@@ -71,7 +71,6 @@ class DrawGUIs extends JFrame {
 
 		// Set a LayoutManager, and add the choosers and buttons to the menu.
 		JPanel menu = new JPanel(new GridLayout(2,1));
-		System.out.println(menu.getLocation());
 		JPanel toolMenu = new JPanel((new FlowLayout(FlowLayout.LEFT)));
 		toolMenu.add(pencil_size_slider);
 		toolMenu.add(new JLabel("Shape:"));
@@ -208,7 +207,6 @@ class DrawGUIs extends JFrame {
 		// this.show(); //chg
 		this.pack();
 		this.setVisible(true); // ++
-		System.out.println(menu.getLocation());
 	}
 
 	public Color getBGColor() {
