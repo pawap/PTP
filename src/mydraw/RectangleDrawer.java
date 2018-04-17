@@ -37,7 +37,7 @@ class RectangleDrawer extends ShapeDrawer {
                 BasicStroke.JOIN_MITER));
 		if (lastx != -1) {
 			// first undraw a rubber rect
-			g.setXORMode(this.shapeManager.gui.color);
+			g.setXORMode(this.shapeManager.gui.fgColor);
 			g.setColor(this.shapeManager.gui.getBackground());
 			doDraw(pressx, pressy, lastx, lasty, g);
 			lastx = -1;
@@ -46,7 +46,7 @@ class RectangleDrawer extends ShapeDrawer {
 		// these commands finish the rubberband mode
 		
 		g.setPaintMode();
-		g.setColor(this.shapeManager.gui.color);
+		g.setColor(this.shapeManager.gui.fgColor);
 		// draw the finel rectangle
 		doDraw(pressx, pressy, e.getX(), e.getY(), g);
 	}
@@ -59,7 +59,7 @@ class RectangleDrawer extends ShapeDrawer {
                 BasicStroke.CAP_ROUND,
                 BasicStroke.JOIN_MITER));
 		// these commands set the rubberband mode
-		g.setXORMode(this.shapeManager.gui.color);
+		g.setXORMode(this.shapeManager.gui.fgColor);
 		g.setColor(this.shapeManager.gui.getBackground());
 		if (lastx != -1) {
 			// first undraw previous rubber rect
