@@ -17,7 +17,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 /** This class implements the GUI for our application */
 class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
-	Color color, bgColor;
+	Color fgColor, bgColor;
 	int pencilSize;
 	JDrawingArea drawingArea;
 	JSizeMenu sizeMenu;
@@ -30,7 +30,7 @@ class DrawGUIs extends JFrame {
 	public DrawGUIs(Draw application) {
 		super("Draw"); // Create the window
 		app = application; // Remember the application reference
-		color = Color.black; // the current drawing color
+		fgColor = Color.black; // the current drawing color
 		bgColor = Color.white; //the background color
 		pencilSize = 1; 
 
@@ -47,6 +47,7 @@ class DrawGUIs extends JFrame {
 		color_chooser.add("Red");
 		color_chooser.add("Blue");
 		
+		// selector for the background color
 		bg_color_chooser = new Choice();
 		bg_color_chooser.add("White");
 		bg_color_chooser.add("Black");
@@ -54,12 +55,14 @@ class DrawGUIs extends JFrame {
 		bg_color_chooser.add("Red");
 		bg_color_chooser.add("Blue");
 		
+		// slider to change the pencil size
 		JSlider pencil_size_slider = new JSlider(1,20);
 		pencil_size_slider.setValue(pencilSize);
 		pencil_size_slider.setPaintTicks(true);
 		pencil_size_slider.setPaintLabels(true);
 		pencil_size_slider.setMajorTickSpacing(7);
 		pencil_size_slider.setMinorTickSpacing(1);
+		
 		// Create menu buttons
 		JButton clear = new JButton("Clear");
 		JButton quit = new JButton("Quit");
@@ -155,13 +158,13 @@ class DrawGUIs extends JFrame {
 			// user selected new color => store new color in DrawGUIs
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getItem().equals("Black")) {
-					color = Color.black;
+					fgColor = Color.black;
 				} else if (e.getItem().equals("Green")) {
-					color = Color.green;
+					fgColor = Color.green;
 				} else if (e.getItem().equals("Red")) {
-					color = Color.red;
+					fgColor = Color.red;
 				} else if (e.getItem().equals("Blue")) {
-					color = Color.blue;
+					fgColor = Color.blue;
 				}
 			}
 		}		
@@ -231,7 +234,7 @@ class DrawGUIs extends JFrame {
 		ShapeManager shapeManager = new ShapeManager(this);
 		RectangleDrawer rectDrawer = new RectangleDrawer(shapeManager);
 		Graphics g = drawingArea.image.getGraphics();
-		g.setColor(this.color);
+		g.setColor(this.fgColor);
 		rectDrawer.doDraw(x, y, x2, y2, g);
 		shapeManager.dispose();
 	}
@@ -247,7 +250,7 @@ class DrawGUIs extends JFrame {
 		ShapeManager shapeManager = new ShapeManager(this);
 		OvalDrawer ovalDrawer = new OvalDrawer(shapeManager);
 		Graphics g = drawingArea.image.getGraphics();
-		g.setColor(this.color);
+		g.setColor(this.fgColor);
 		ovalDrawer.doDraw(x, y, x2, y2, g);
 		shapeManager.dispose();
 	}
@@ -257,14 +260,14 @@ class DrawGUIs extends JFrame {
 	}
 
 	protected void setFGColor(Color c) {
-		color = c;
+		fgColor = c;
 	}
 
 	/**
 	 * @return the active color as a Color 
 	 */
 	protected Color getFGColor() {
-		return color;
+		return fgColor;
 	}
 
 	/**
@@ -286,7 +289,7 @@ class DrawGUIs extends JFrame {
 
 	public void drawPolyLine(List<Point> points) {
 		Graphics g = drawingArea.getImageGraphics();
-		g.setColor(color);
+		g.setColor(fgColor);
 		Point currentPoint = points.get(0);
 		for (Point point: points) {
 			g.drawLine(currentPoint.x,currentPoint.y,point.x, point.y);

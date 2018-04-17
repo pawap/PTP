@@ -17,15 +17,21 @@ import javax.swing.*; //++
 /** The application class. Processes high-level commands sent by GUI */
 public class Draw {
 	
-	protected String FGColor;
-	protected String BGColor;
+	//Fields
+	protected String FGColor; //current foreground
+	protected String BGColor; //current background color
+	protected DrawGUIs window;
 	
-	/** main entry point. Just create an instance of this application class */
+	/** main entry point. 
+	 * Just creates an instance of this application class 
+	 */
 	public static void main(String[] args) {
 		new Draw();
 	}
 
-	/** Application constructor: create an instance of our GUI class */
+	/** Application constructor:  
+	 * creates an instance of our GUI class and initializes the default colors. 
+	 */
 	public Draw() {
 		window = new DrawGUIs(this);
 		
@@ -35,10 +41,9 @@ public class Draw {
 		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
 
-	protected DrawGUIs window; // chg
-
 	/**
 	 * This is the application method that processes commands sent by the GUI
+	 * @param command an element from {"clear", "quit", "auto", "save", "load"} 
 	 */
 	public void doCommand(String command) {
 		if (command.equals("clear")) { // clear the GUI window
@@ -60,7 +65,6 @@ public class Draw {
 	        	try {
 					writeImage(getDrawing(),chooser.getSelectedFile().getAbsolutePath());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
 	        }
@@ -75,37 +79,70 @@ public class Draw {
 					img.getGraphics().drawImage(orgImg, 0, 0, null);
 					window.setImage(img);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	        }
 		}
 	}
 	// TODO add javadoc & other comments!
-
+	/**
+	 * returns the image drawn on the GUI
+	 * @return the current image
+	 */
 	public Image getDrawing(){
 		return window.getImage();
 	}
 
+	/**
+	 * Saves an image as Windows bitmap file (*.bmp) under the specified name.
+	 * @param image the image to be saved
+	 * @param filename the name under which the image will be saved
+	 * @throws IOException
+	 */
 	public void writeImage(Image image, String filename) throws IOException{
 		MyBMPFile.write(filename, image);		
 	}
 
+	/**
+     * Read a Windows bitmap file (*.bmp) 
+     * @param filename the image's file name
+     * @return the image read 
+	 * @throws IOException
+	 */
 	public Image readImage(String filename) throws IOException{
 		return MyBMPFile.read(filename);		
 	}
 
+	/**
+	 * Draws a rectangle on the GUI's drawing area
+	 * @param upper_left the top left corner of the rectangle
+	 * @param lower_right the bottom right corner of the rectangle
+	 */
 	public void drawRectangle(Point upper_left, Point lower_right) {
 		window.drawRectangle(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
 	}
 
+	/**
+	 * Draws an oval on the GUI's drawing area
+	 * @param upper_left the top left corner of the invisible rectangle that encloses the oval
+	 * @param lower_right the bottom right corner of the invisible rectangle that encloses the oval
+	 */
 	public void drawOval(Point upper_left, Point lower_right) {
 		window.drawOval(upper_left.x, upper_left.y, lower_right.x, lower_right.y);
 	} 
 
+	/**
+	 * connects the points it receives with lines on the drawing area.
+	 * @param points a list of points that you want to be connected by lines
+	 */
 	public void drawPolyLine(java.util.List<Point> points) {
 		window.drawPolyLine(points);		
 	}
+	
+	/**
+	 * draws a predefined image onto the drawing area using every available color
+	 * and every available drawing method.
+	 */
 	public void autoDraw() {
 		try {	
 			setBGColor("green");
@@ -134,7 +171,7 @@ public class Draw {
 		}
 	}
 
-	/**
+	/**Returns the width of the drawing area.
 	 * @return the width of the drawing area
 	 */
 	public int getWidth() {
@@ -142,29 +179,38 @@ public class Draw {
 		return img.getWidth(null);
 	}
 
+	/**
+	 * Sets the width of the drawing area.
+	 * @param new_width the desired width
+	 */
 	public void setWidth(int new_width) {
 		window.resizeDrawingArea(new_width, getHeight());
 	}
 
-	/**
+	/**Returns the height of the drawing area.
 	 * @return the height of the drawing area
 	 */
 	public int getHeight() {
 		Image img = window.getImage();
 		return img.getHeight(null);
 	}
+	
+	/**
+	 * Sets the height of the drawing area. 
+	 * @param new_height the desired height
+	 */
 	public void setHeight(int new_height) {
 		window.resizeDrawingArea(getWidth(), new_height);
 	}
 
-	/**
+	/**Returns a string representing the current drawing color.
 	 * @return the active color as a string 
 	 */
 	public String getFGColor() {
 		return MyColor.colorToString(window.getFGColor());
 	}
 
-	/**
+	/**Returns a string representing the current background color.
 	 * @return the background color as a string 
 	 */
 	public String getBGColor() {
@@ -189,6 +235,7 @@ public class Draw {
 		//local vars
 		JDrawingArea drawingArea = window.getDrawingArea();
 		Color new_col = MyColor.stringToColor(new_color);
+		
 		window.switchColor(new_col, window.getBGColor());
 		window.setBGColor(new_col);
 		drawingArea.repaint();
