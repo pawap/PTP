@@ -15,12 +15,30 @@ import org.junit.Test;
 
 import mydraw.ColorException;
 import mydraw.Draw;
+import mydraw.MyColor;
 
 /**
  * @author Paw
  *
  */
 public class DrawTest {
+
+	/**
+	 * Test method for {@link mydraw.Draw#getDrawing()}.
+	 * @throws ColorException 
+	 */
+	@Test
+	public void testGetDrawing() throws ColorException {
+		Draw draw = new Draw();
+		assertTrue(draw.getDrawing() != null);
+		assertTrue(draw.getDrawing() instanceof Image);
+		assertEquals(draw.getDrawing().getHeight(null), draw.getHeight());
+		assertEquals(draw.getDrawing().getWidth(null), draw.getWidth());
+		
+		draw.drawRectangle(new Point(40, 30), new Point(100,120));
+		BufferedImage image = (BufferedImage) draw.getDrawing();
+		assertEquals(image.getRGB(40, 30), MyColor.stringToColor(draw.getFGColor()).getRGB());
+	}
 
 	/**
 	 * Test method for {@link mydraw.Draw#getWidth()}.
@@ -94,6 +112,19 @@ public class DrawTest {
 	public void testGetFGColor() {
 		Draw draw = new Draw(Color.red, Color.green, 1, 400, 321);
 		assertEquals(draw.getFGColor(), "Red");
+		String fgColor = draw.getFGColor();
+		System.out.println(fgColor);
+		assertTrue(!fgColor.equals("") );
+		assertTrue(MyColor.isAColor(fgColor));
+		
+		try {
+			draw.setFGColor("green");
+		} catch (ColorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Testcolor : green not accepted as FG Color");
+		}
+		assertEquals(draw.getFGColor().toLowerCase(),"green");
 	}
 
 	/**
@@ -101,8 +132,19 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetBGColor() {
-		Draw draw = new Draw(Color.red, Color.green, 1, 400, 321);
-		assertEquals(draw.getBGColor(), "Green");
+		Draw draw = new Draw(Color.red, Color.blue, 1, 400, 321);
+		assertEquals(draw.getBGColor(), "Blue");
+		String bgColor = draw.getBGColor();
+		assertTrue(!bgColor.equals("") );
+		assertTrue(MyColor.isAColor(bgColor));
+		try {
+			draw.setBGColor("green");
+		} catch (ColorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Testcolor : green not accepted as BG Color");
+		}
+		assertEquals(draw.getBGColor().toLowerCase(),"green");
 	}
 
 	/**
@@ -186,6 +228,15 @@ public class DrawTest {
 	
 
 	}
+	/**
+	 * Helper method for comparing two images regarding their RGB-Content.
+	 * 
+	 * @param img Image 
+	 * @param referenceImg Image
+	 * @return int[] An Array, which is empty, if the two Images have the same RGB Content,
+	 * or contains 4 Values: [0],[1]: x,y coordinates of the first differing pixel encountered, 
+	 * [2]: color of the image, [3] color of the reference-image  
+	 */
 	private int[] comparePixels(Image img, Image referenceImg) {
 		int width = img.getWidth(null);
 		int height = img.getHeight(null);

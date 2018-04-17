@@ -12,14 +12,14 @@ public enum MyColor {
 	BLACK, GREEN, RED, BLUE, WHITE; 
 
 	/**
-	 * checks if the input string can be mapped to one of the MyColor colors. The check is
-	 * case sensitive and the input string should consist of only uppercase letters.
+	 * checks if the input string can be mapped to one of the MyColor colors.
 	 * @param str
 	 * @return true if the input matches a valid color
 	 */
 	public static boolean isAColor(String str) {
+		String string = str.toUpperCase();
 		for (MyColor c : MyColor.values()) {
-			if (c.toString().equals(str)) {
+			if (c.toString().equals(string)) {
 				return true;
 			}
 		}

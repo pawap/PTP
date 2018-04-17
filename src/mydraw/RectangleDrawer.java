@@ -33,7 +33,7 @@ class RectangleDrawer extends ShapeDrawer {
 	public void mouseReleased(MouseEvent e) {
 		Graphics2D g = (Graphics2D) this.shapeManager.getDrawingArea().getImageGraphics(); //draw on image
 		g.setStroke(new BasicStroke(shapeManager.gui.pencilSize,                     // Line width
-                BasicStroke.CAP_ROUND,    // End-cap style
+                BasicStroke.CAP_SQUARE,    // End-cap style
                 BasicStroke.JOIN_MITER));
 		if (lastx != -1) {
 			// first undraw a rubber rect
@@ -56,7 +56,7 @@ class RectangleDrawer extends ShapeDrawer {
 	public void mouseDragged(MouseEvent e) {
 		Graphics2D g = (Graphics2D) this.shapeManager.getDrawingArea().getImageGraphics();
 		g.setStroke(new BasicStroke(shapeManager.gui.pencilSize,                     // Line width
-                BasicStroke.CAP_ROUND,
+                BasicStroke.CAP_SQUARE,
                 BasicStroke.JOIN_MITER));
 		// these commands set the rubberband mode
 		g.setXORMode(this.shapeManager.gui.fgColor);

@@ -19,7 +19,6 @@ class ScribbleDrawer extends ShapeDrawer {
 	 */
 	ScribbleDrawer(ShapeManager shapeManager) {
 		this.shapeManager = shapeManager;
-		System.out.println(shapeManager.getDrawingArea());
 		this.drawingArea = shapeManager.getDrawingArea();
 		this.gui = shapeManager.getGui();
 		
