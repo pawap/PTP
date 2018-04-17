@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import mydraw.ColorException;
 import mydraw.Draw;
+import mydraw.MyColor;
 
 /**
  * @author Paw
@@ -24,10 +25,18 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#getDrawing()}.
+	 * @throws ColorException 
 	 */
 	@Test
-	public void testGetDrawing() {
-		fail("Not yet implemented");
+	public void testGetDrawing() throws ColorException {
+		Draw draw = new Draw();
+		assertTrue(draw.getDrawing() != null);
+		assertTrue(draw.getDrawing() instanceof Image);
+		assertEquals(draw.getDrawing().getHeight(null), draw.getHeight());
+		assertEquals(draw.getDrawing().getWidth(null), draw.getWidth());
+		draw.drawRectangle(new Point(40, 30), new Point(100,120));
+		BufferedImage image = (BufferedImage) draw.getDrawing();
+		assertEquals(image.getRGB(40, 30), MyColor.stringToColor(draw.getFGColor()).getRGB());
 	}
 
 	/**
@@ -101,6 +110,7 @@ public class DrawTest {
 		Draw draw = new Draw();
 		String fgColor = draw.getFGColor();
 		assertTrue(!fgColor.equals("") );
+		assertTrue(MyColor.isAColor(fgColor));
 		
 		try {
 			draw.setFGColor("green");
@@ -120,7 +130,7 @@ public class DrawTest {
 		Draw draw = new Draw();
 		String bgColor = draw.getBGColor();
 		assertTrue(!bgColor.equals("") );
-		
+		assertTrue(MyColor.isAColor(bgColor));
 		try {
 			draw.setBGColor("green");
 		} catch (ColorException e) {
