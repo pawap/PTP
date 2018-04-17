@@ -98,7 +98,18 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetFGColor() {
-		fail("Not yet implemented");
+		Draw draw = new Draw();
+		String fgColor = draw.getFGColor();
+		assertTrue(!fgColor.equals("") );
+		
+		try {
+			draw.setFGColor("green");
+		} catch (ColorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Testcolor : green not accepted as FG Color");
+		}
+		assertEquals(draw.getFGColor().toLowerCase(),"green");
 	}
 
 	/**
@@ -106,7 +117,18 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetBGColor() {
-		fail("Not yet implemented");
+		Draw draw = new Draw();
+		String bgColor = draw.getBGColor();
+		assertTrue(!bgColor.equals("") );
+		
+		try {
+			draw.setBGColor("green");
+		} catch (ColorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Testcolor : green not accepted as BG Color");
+		}
+		assertEquals(draw.getBGColor().toLowerCase(),"green");
 	}
 
 	/**
