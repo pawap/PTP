@@ -23,20 +23,13 @@ import mydraw.Draw;
 public class DrawTest {
 
 	/**
-	 * Test method for {@link mydraw.Draw#getDrawing()}.
-	 */
-	@Test
-	public void testGetDrawing() {
-		fail("Not yet implemented");
-	}
-
-	/**
 	 * Test method for {@link mydraw.Draw#getWidth()}.
 	 */
 	@Test
 	public void testGetWidth() {
-		Draw draw = new Draw();
+		Draw draw = new Draw(Color.black, Color.white, 1, 111, 320);
 		assertNotEquals(draw.getWidth(),0);
+		assertEquals(draw.getWidth(),111);
 		draw.setWidth(300);
 		assertEquals(draw.getWidth(),300);
 	}
@@ -67,8 +60,9 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetHeight() {
-		Draw draw = new Draw();
+		Draw draw = new Draw(Color.black, Color.white, 1, 400, 321);
 		assertTrue(draw.getHeight() > 0);
+		assertEquals(draw.getHeight(),321);
 		draw.setHeight(777);
 		assertEquals(draw.getHeight(),777);
 	}
@@ -78,7 +72,7 @@ public class DrawTest {
 	 */
 	@Test
 	public void testSetHeight() {
-		Draw draw = new Draw();
+		Draw draw = new Draw(Color.black, Color.white, 1, 400, 320);
 		draw.setHeight(555);
 		assertEquals(draw.getHeight(),555);
 		
@@ -98,7 +92,8 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetFGColor() {
-		fail("Not yet implemented");
+		Draw draw = new Draw(Color.red, Color.green, 1, 400, 321);
+		assertEquals(draw.getFGColor(), "Red");
 	}
 
 	/**
@@ -106,7 +101,8 @@ public class DrawTest {
 	 */
 	@Test
 	public void testGetBGColor() {
-		fail("Not yet implemented");
+		Draw draw = new Draw(Color.red, Color.green, 1, 400, 321);
+		assertEquals(draw.getBGColor(), "Green");
 	}
 
 	/**
@@ -115,7 +111,7 @@ public class DrawTest {
 	 */
 	@Test
 	public void testSetFGColor() throws ColorException {
-		Draw draw = new Draw();
+		Draw draw = new Draw(Color.red, Color.white, 1, 400, 321);
 		try {
 			draw.setFGColor("pink");
 			fail("No exception thrown for inacceptable color.");
@@ -126,7 +122,7 @@ public class DrawTest {
 		}
 		
 		draw.setFGColor("Black");
-		assertEquals(draw.getFGColor(),"BLACK");
+		assertEquals(draw.getFGColor(),"Black");
 		
 		draw.drawRectangle(new Point(10,10),new Point(20,20));
 		BufferedImage img = (BufferedImage) draw.getDrawing();	
@@ -141,7 +137,7 @@ public class DrawTest {
 	 */
 	@Test
 	public void testSetBGColor() throws ColorException {
-		Draw draw = new Draw();
+		Draw draw = new Draw(Color.red, Color.white, 1, 400, 321);
 		try {
 			draw.setBGColor("pink");
 			fail("No exception thrown for inacceptable color.");
@@ -152,7 +148,7 @@ public class DrawTest {
 		}
 		
 		draw.setBGColor("Black");
-		assertEquals(draw.getBGColor(),"BLACK");
+		assertEquals(draw.getBGColor(),"Black");
 		
 		BufferedImage img = (BufferedImage) draw.getDrawing();	
 		assertEquals(img.getRGB(10, 10),Color.BLACK.getRGB());

@@ -54,13 +54,19 @@ public enum MyColor {
 		}
 	}
 
+	/**
+	 * returns a string representation of a color with the first letter being uppercase
+	 * and the rest of the letters being lowercase. 
+	 * @param col the color to be mapped to a string
+	 * @return the string representation of the color
+	 */
 	public static String colorToString(Color col) {
 		try {
 			for (MyColor mc : MyColor.values()) {
 				String col_str = mc.toString();
 
 				if (col.equals(stringToColor(col_str))) {
-					return col_str;
+					return col_str.substring(0, 1).toUpperCase() + col_str.substring(1).toLowerCase();
 				}
 			}
 		}

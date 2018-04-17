@@ -23,16 +23,19 @@ class DrawGUIs extends JFrame {
 	JSizeMenu sizeMenu;
 	Choice bg_color_chooser;
 
+	public DrawGUIs(Draw application) {
+		this(application, Color.black, Color.white, 1, 400, 320);
+	}
 	/**
 	 * The GUI constructor does all the work of creating the GUI and setting up
 	 * event listeners. Note the use of local and anonymous classes.
 	 */
-	public DrawGUIs(Draw application) {
+	public DrawGUIs(Draw application, Color fg, Color bg, int pSize, int w, int h) {
 		super("Draw"); // Create the window
 		app = application; // Remember the application reference
-		fgColor = Color.black; // the current drawing color
-		bgColor = Color.white; //the background color
-		pencilSize = 1; 
+		fgColor = fg; // the current drawing color
+		bgColor = bg; //the background color
+		pencilSize = pSize; 
 
 		// selector for drawing modes
 		Choice shape_chooser = new Choice();
@@ -46,6 +49,7 @@ class DrawGUIs extends JFrame {
 		color_chooser.add("Green");
 		color_chooser.add("Red");
 		color_chooser.add("Blue");
+		color_chooser.select(MyColor.colorToString(fgColor));
 		
 		// selector for the background color
 		bg_color_chooser = new Choice();
@@ -53,7 +57,8 @@ class DrawGUIs extends JFrame {
 		bg_color_chooser.add("Black");
 		bg_color_chooser.add("Green");
 		bg_color_chooser.add("Red");
-		bg_color_chooser.add("Blue");
+		bg_color_chooser.add("Blue"); 
+		bg_color_chooser.select(MyColor.colorToString(bgColor));
 		
 		// slider to change the pencil size
 		JSlider pencil_size_slider = new JSlider(1,20);
@@ -93,14 +98,14 @@ class DrawGUIs extends JFrame {
 		menu.add(imageMenu);
 
 		// Setup DrawingArea with a new BufferedImage, Default BGColor: white
-		drawingArea = new JDrawingArea(new BufferedImage(400, 320, BufferedImage.TYPE_INT_ARGB), new Dimension (400,320));
+		drawingArea = new JDrawingArea(new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB), new Dimension (w,h));
 		drawingArea.getImageGraphics().setColor(bgColor);
-		drawingArea.getImageGraphics().fillRect(0,0, 400, 320);
+		drawingArea.getImageGraphics().fillRect(0,0, w, h);
 		drawingArea.setBackground(bgColor);
 		drawingArea.setLayout(new BorderLayout());
 		
 		// Setup SizeMenu
-		sizeMenu = new JSizeMenu(new Dimension(400,320));
+		sizeMenu = new JSizeMenu(new Dimension(w, h));
 		imageMenu.add(sizeMenu);
 		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
 
@@ -206,9 +211,7 @@ class DrawGUIs extends JFrame {
 		});
 
 		// Finally, set the size of the window, and pop it up
-		this.setSize(1000, 400);		
-		this.setBackground(Color.white); // TODO obsolete. remove 
-		// this.show(); //chg
+		this.setSize(1000, 400);		 
 		this.pack();
 		this.setVisible(true); // ++
 		System.out.println(menu.getLocation());

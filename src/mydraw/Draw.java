@@ -17,10 +17,7 @@ import javax.swing.*; //++
 /** The application class. Processes high-level commands sent by GUI */
 public class Draw {
 	
-	//Fields
-	protected String FGColor; //current foreground
-	protected String BGColor; //current background color
-	protected DrawGUIs window;
+	protected DrawGUIs window; //the GUI
 	
 	/** main entry point. 
 	 * Just creates an instance of this application class 
@@ -33,10 +30,11 @@ public class Draw {
 	 * creates an instance of our GUI class and initializes the default colors. 
 	 */
 	public Draw() {
-		window = new DrawGUIs(this);
-		
-		FGColor = "Black";
-		BGColor = "White";
+		this(Color.black, Color.white, 1, 400, 320);
+	}
+	
+	public Draw(Color fg, Color bg, int pSize, int w, int h) {
+		window = new DrawGUIs(this, fg, bg, pSize, w, h);
 		
 		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
