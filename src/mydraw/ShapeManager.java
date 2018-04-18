@@ -27,6 +27,7 @@ class ShapeManager implements ItemListener {
 		gui.drawingArea.addMouseListener(currentDrawer);
 		gui.drawingArea.addMouseMotionListener(currentDrawer);
 	}
+	
 
 	// reset the shape drawer
 	public void setCurrentDrawer(ShapeDrawer l) {

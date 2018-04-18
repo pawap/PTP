@@ -16,33 +16,45 @@ import com.sun.xml.internal.ws.util.StringUtils;
 
 /** This class implements the GUI for our application */
 class DrawGUIs extends JFrame {
-	Draw app; // A reference to the application, to send commands to.
 	Color fgColor, bgColor;
 	int pencilSize;
 	JDrawingArea drawingArea;
 	JSizeMenu sizeMenu;
-	Choice bg_color_chooser;
-	Choice shape_chooser;
-
-	public DrawGUIs(Draw application) {
-		this(application, Color.black, Color.white, 1, 400, 320);
+	Choice bgColorChooser;
+	Choice shapeChooser;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public JSizeMenu getSizeMenu() {
+		return sizeMenu;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public Choice getShapeChooser() {
+		return shapeChooser;
+	}
+	public DrawGUIs() {
+		this(Color.black, Color.white, 1, 400, 320);
 	}
 	/**
 	 * The GUI constructor does all the work of creating the GUI and setting up
 	 * event listeners. Note the use of local and anonymous classes.
 	 */
-	public DrawGUIs(Draw application, Color fg, Color bg, int pSize, int w, int h) {
+	public DrawGUIs(Color fg, Color bg, int pSize, int w, int h) {
 		super("Draw"); // Create the window
-		app = application; // Remember the application reference
 		fgColor = fg; // the current drawing color
 		bgColor = bg; //the background color
 		pencilSize = pSize; 
 
 		// selector for drawing modes
-		shape_chooser = new Choice();
-		shape_chooser.add("Scribble");
-		shape_chooser.add("Rectangle");
-		shape_chooser.add("Oval");
+		shapeChooser = new Choice();
+		shapeChooser.add("Scribble");
+		shapeChooser.add("Rectangle");
+		shapeChooser.add("Oval");
 
 		// selector for drawing colors
 		Choice color_chooser = new Choice();
@@ -53,13 +65,13 @@ class DrawGUIs extends JFrame {
 		color_chooser.select(MyColor.colorToString(fgColor));
 		
 		// selector for the background color
-		bg_color_chooser = new Choice();
-		bg_color_chooser.add("White");
-		bg_color_chooser.add("Black");
-		bg_color_chooser.add("Green");
-		bg_color_chooser.add("Red");
-		bg_color_chooser.add("Blue"); 
-		bg_color_chooser.select(MyColor.colorToString(bgColor));
+		bgColorChooser = new Choice();
+		bgColorChooser.add("White");
+		bgColorChooser.add("Black");
+		bgColorChooser.add("Green");
+		bgColorChooser.add("Red");
+		bgColorChooser.add("Blue"); 
+		bgColorChooser.select(MyColor.colorToString(bgColor));
 		
 		// slider to change the pencil size
 		JSlider pencil_size_slider = new JSlider(1,20);
@@ -83,11 +95,11 @@ class DrawGUIs extends JFrame {
 		JPanel toolMenu = new JPanel((new FlowLayout(FlowLayout.LEFT)));
 		toolMenu.add(pencil_size_slider);
 		toolMenu.add(new JLabel("Shape:"));
-		toolMenu.add(shape_chooser);
+		toolMenu.add(shapeChooser);
 		toolMenu.add(new JLabel("Color:"));
 		toolMenu.add(color_chooser);
 		toolMenu.add(new JLabel("BGColor:"));
-		toolMenu.add(bg_color_chooser);
+		toolMenu.add(bgColorChooser);
 		toolMenu.add(clear);
 		JPanel imageMenu = new JPanel(new FlowLayout(FlowLayout.LEFT,5,1));
 		imageMenu.add(quit);
@@ -107,19 +119,7 @@ class DrawGUIs extends JFrame {
 		// Setup SizeMenu
 		sizeMenu = new JSizeMenu(new Dimension(w, h));
 		imageMenu.add(sizeMenu);
-		sizeMenu.addPropertyChangeListener(new PropertyChangeListener(){
-
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName() == "size") {
-					Dimension size = (Dimension) evt.getNewValue();
-					System.out.println(""+evt.getPropertyName());
-					app.setHeight((int) size.getHeight());
-					app.setWidth((int) size.getWidth());
-				}
-			}
-
-		});
+		
 		// New Layout for Frame. TODO elaborate
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();		
@@ -146,10 +146,9 @@ class DrawGUIs extends JFrame {
 			}
 
 			public void actionPerformed(ActionEvent e) {
-				app.doCommand(command);
+				  firePropertyChange("command", null, command);
 			}
 		}
-
 		// Define action listener adapters that connect the buttons to the app
 		clear.addActionListener(new DrawActionListener("clear"));
 		quit.addActionListener(new DrawActionListener("quit"));
@@ -157,38 +156,24 @@ class DrawGUIs extends JFrame {
 		save.addActionListener(new DrawActionListener("save"));
 		load.addActionListener(new DrawActionListener("load"));
 
-		// shape_chooser.addItemListener(new ShapeManager(this));
 
 		class ColorItemListener implements ItemListener {
 
-			// user selected new color => store new color in DrawGUIs
+			// user selected new fgColor
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getItem().equals("Black")) {
-					fgColor = Color.black;
-				} else if (e.getItem().equals("Green")) {
-					fgColor = Color.green;
-				} else if (e.getItem().equals("Red")) {
-					fgColor = Color.red;
-				} else if (e.getItem().equals("Blue")) {
-					fgColor = Color.blue;
-				}
+				firePropertyChange("fgcolor",null,(String) e.getItem());
 			}
 		}		
 		
 		color_chooser.addItemListener(new ColorItemListener());
 		class BGColorItemListener implements ItemListener {
 
-			// user selected new bgColor => store new bgColor in DrawGUIs
+			// user selected new bgColor
 			public void itemStateChanged(ItemEvent e) {
-				try {
-					app.setBGColor((String) e.getItem());
-				} catch (ColorException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				firePropertyChange("bgcolor",null,(String) e.getItem());
 			}
 		}
-		bg_color_chooser.addItemListener(new BGColorItemListener());
+		bgColorChooser.addItemListener(new BGColorItemListener());
 		
 		class SliderListener implements ChangeListener {
 
@@ -206,7 +191,7 @@ class DrawGUIs extends JFrame {
 		// Handle the window close request similarly
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				app.doCommand("quit");
+				firePropertyChange("command",null,"quit");
 			}
 		});
 
@@ -223,7 +208,7 @@ class DrawGUIs extends JFrame {
 	public void setBGColor(Color bgColor) {
 		String colorStr = MyColor.colorToString(bgColor).toLowerCase();
 		colorStr = StringUtils.capitalize(colorStr);
-		bg_color_chooser.select(colorStr);
+		bgColorChooser.select(colorStr);
 		this.bgColor = bgColor;
 	}
 
@@ -326,8 +311,5 @@ class DrawGUIs extends JFrame {
 		}
 		
 	}
-	public void initShapeManager(ShapeManager shapeManager) {
-		shape_chooser.addItemListener(shapeManager);
-		
-	}
+
 }

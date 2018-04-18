@@ -1,9 +1,6 @@
 package mydraw;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-
 import javax.swing.*;
 
 public class JDrawingArea extends JPanel {
@@ -31,8 +28,6 @@ public class JDrawingArea extends JPanel {
 			this.setMinimumSize(size);
 			this.setSize(size);
 		}
-
-
 	}
 	/**
 	 * Get Graphics Instance of the image

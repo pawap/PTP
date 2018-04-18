@@ -3,6 +3,8 @@ package mydraw;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,9 +37,53 @@ public class Draw {
 	}
 	
 	public Draw(Color fg, Color bg, int pSize, int w, int h) {
-		window = new DrawGUIs(this, fg, bg, pSize, w, h);
+		window = new DrawGUIs(fg, bg, pSize, w, h);
 		shapeManager = new ShapeManager(window);
-		window.initShapeManager(shapeManager);
+		window.getShapeChooser().addItemListener(shapeManager);
+		window.getSizeMenu().addPropertyChangeListener("size",new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName() == "size") {
+					Dimension size = (Dimension) evt.getNewValue();
+					setHeight((int) size.getHeight());
+					setWidth((int) size.getWidth());
+				}
+			}
+
+		});
+		window.addPropertyChangeListener("bgcolor", new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				try {
+					setBGColor((String) event.getNewValue());
+				} catch (ColorException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		window.addPropertyChangeListener("fgcolor", new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				try {
+					setFGColor((String) event.getNewValue());
+				} catch (ColorException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		window.addPropertyChangeListener("command", new PropertyChangeListener(){
+
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				doCommand((String) event.getNewValue());
+			}
+		});
+		
 		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
 
@@ -52,6 +98,7 @@ public class Draw {
 			Graphics g = window.getImage().getGraphics(); //get Graphics for Image
 			g.setColor(window.getBGColor());
 			g.fillRect(0, 0, window.getSize().width, window.getSize().height);
+			
 			window.repaint();
 		} else if (command.equals("quit")) { // quit the application
 			window.dispose(); // close the GUI
