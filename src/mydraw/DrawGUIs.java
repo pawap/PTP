@@ -22,6 +22,7 @@ class DrawGUIs extends JFrame {
 	JDrawingArea drawingArea;
 	JSizeMenu sizeMenu;
 	Choice bg_color_chooser;
+	Choice shape_chooser;
 
 	public DrawGUIs(Draw application) {
 		this(application, Color.black, Color.white, 1, 400, 320);
@@ -38,7 +39,7 @@ class DrawGUIs extends JFrame {
 		pencilSize = pSize; 
 
 		// selector for drawing modes
-		Choice shape_chooser = new Choice();
+		shape_chooser = new Choice();
 		shape_chooser.add("Scribble");
 		shape_chooser.add("Rectangle");
 		shape_chooser.add("Oval");
@@ -156,7 +157,7 @@ class DrawGUIs extends JFrame {
 		save.addActionListener(new DrawActionListener("save"));
 		load.addActionListener(new DrawActionListener("load"));
 
-		shape_chooser.addItemListener(new ShapeManager(this));
+		// shape_chooser.addItemListener(new ShapeManager(this));
 
 		class ColorItemListener implements ItemListener {
 
@@ -323,6 +324,10 @@ class DrawGUIs extends JFrame {
 				}
 			}
 		}
+		
+	}
+	public void initShapeManager(ShapeManager shapeManager) {
+		shape_chooser.addItemListener(shapeManager);
 		
 	}
 }

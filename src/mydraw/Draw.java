@@ -18,7 +18,8 @@ import javax.swing.*; //++
 public class Draw {
 	
 	protected DrawGUIs window; //the GUI
-	
+	protected ShapeManager shapeManager;
+		
 	/** main entry point. 
 	 * Just creates an instance of this application class 
 	 */
@@ -35,7 +36,8 @@ public class Draw {
 	
 	public Draw(Color fg, Color bg, int pSize, int w, int h) {
 		window = new DrawGUIs(this, fg, bg, pSize, w, h);
-		
+		shapeManager = new ShapeManager(window);
+		window.initShapeManager(shapeManager);
 		window.drawingArea.requestFocusInWindow(); // TODO is this still necessary?
 	}
 
