@@ -200,10 +200,22 @@ class DrawGUIs extends JFrame {
 		this.pack();
 		this.setVisible(true); // ++
 	}
-
+	
+	
+	/**
+	 * Get the current background color
+	 * 
+	 * @return Color the current background color
+	 */
 	public Color getBGColor() {
 		return bgColor;
 	}
+	
+	/**
+	 *  Set the background color
+	 * 
+	 * @param bgColor
+	 */
 
 	public void setBGColor(Color bgColor) {
 		String colorStr = MyColor.colorToString(bgColor).toLowerCase();
@@ -243,16 +255,28 @@ class DrawGUIs extends JFrame {
 		ovalDrawer.doDraw(x, y, x2, y2, g);
 		shapeManager.dispose();
 	}
-
+	
+	/**
+	 * Get the JDrawingArea-instance of this GUI
+	 * 
+	 * @return the JDrawingArea-Element of this GUI
+	 */
 	protected JDrawingArea getDrawingArea() {
 		return drawingArea;
 	}
 
+	/**
+	 * Set the foreground color
+	 * 
+	 * @param c the desired foreground color
+	 */
 	protected void setFGColor(Color c) {
 		fgColor = c;
 	}
 
 	/**
+	 * Get the current foreground color
+	 * 
 	 * @return the active color as a Color 
 	 */
 	protected Color getFGColor() {
@@ -260,6 +284,7 @@ class DrawGUIs extends JFrame {
 	}
 
 	/**
+	 * Returns a reference to the image containing the current content of the drawing area.
 	 * 
 	 * @return 
 	 */
@@ -269,6 +294,10 @@ class DrawGUIs extends JFrame {
 	}
 
 	/**
+	 * Sets the current Image of the drawing area
+	 * and refreshes the display 
+	 * 
+	 * @param img the new image to be displayed
 	 * 
 	 */
 	public void setImage(Image img) {
@@ -276,6 +305,12 @@ class DrawGUIs extends JFrame {
 		drawingArea.repaint();
 	}
 
+	
+	/**
+	 * Draws a PolyLine on the drawing area
+	 * 
+	 * @param points a list of point to be connected by lines
+	 */
 	public void drawPolyLine(List<Point> points) {
 		Graphics g = drawingArea.getImageGraphics();
 		g.setColor(fgColor);
@@ -287,7 +322,13 @@ class DrawGUIs extends JFrame {
 		drawingArea.repaint();
 
 	}
-
+	/**
+	 * 
+	 * Resizes the drawing area to have the desired dimension
+	 * 
+	 * @param w desired width in pixels
+	 * @param h desired height in pixels
+	 */
 	public void resizeDrawingArea(int w, int h) {
 		BufferedImage newImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = newImg.getGraphics();
@@ -299,6 +340,12 @@ class DrawGUIs extends JFrame {
 		drawingArea.repaint();		
 	}
 
+	/**
+	 * Exchange all occurrences of one color with another
+	 * 
+	 * @param new_col
+	 * @param bgColor2
+	 */
 	public void switchColor(Color new_col, Color bgColor2) {
 		BufferedImage image = (BufferedImage) drawingArea.image; 
 		for (int x = 0; x < image.getWidth(null); ++x) {//check each pixel and change its color if needed
