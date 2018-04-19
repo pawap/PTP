@@ -1,4 +1,7 @@
 package mydraw;
+/**
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
+ */
 
 import java.awt.Dimension;
 import java.awt.Graphics;

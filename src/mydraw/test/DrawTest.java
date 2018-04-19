@@ -18,13 +18,16 @@ import mydraw.Draw;
 import mydraw.MyColor;
 
 /**
- * @author Paw
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
  *
  */
 public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#getDrawing()}.
+	 * getDrawing() is supposed to fetch the current image from the GUI.
+	 * This test produces an image, fetches it and checks if the fetched one
+	 * meets the expectations.
 	 * @throws ColorException 
 	 */
 	@Test
@@ -42,6 +45,10 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#getWidth()}.
+	 * getWidth() should return the Width of the image/DrawingArea. 
+	 * This test implicitly initiates a GUI with a specifically sized 
+	 * DrawingArea and checks if the width returned by getWidth() matches the 
+	 * specified size.
 	 */
 	@Test
 	public void testGetWidth() {
@@ -54,10 +61,12 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#setWidth(int)}.
+	 * This test checks if setting the size of the DrawingArea to a legal size works as intended
+	 * as well as whether an illegal input produces the correct Exception.
 	 */
 	@Test
 	public void testSetWidth() {
-		Draw draw = new Draw();
+		Draw draw = new Draw(Color.black, Color.white, 1, 111, 320);
 		draw.setWidth(300);
 		assertEquals(draw.getWidth(),300);
 		
@@ -75,6 +84,10 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#getHeight()}.
+	 * getHeight() should return the Height of the image/DrawingArea. 
+	 * This test implicitly initiates a GUI with a specifically sized 
+	 * DrawingArea and checks if the height returned by getWidth() matches the 
+	 * specified size.
 	 */
 	@Test
 	public void testGetHeight() {

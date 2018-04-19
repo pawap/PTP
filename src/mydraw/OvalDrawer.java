@@ -1,5 +1,8 @@
 package mydraw;
 
+/**
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
+ */
 import java.awt.Graphics;
 
 // if this class is active, ovals are drawn

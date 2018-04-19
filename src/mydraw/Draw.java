@@ -1,5 +1,7 @@
 package mydraw;
-
+/**
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
+ */
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;

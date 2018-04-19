@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * MyColor offers access to a subset of the colors offered by java.awt.Color. It offers the possibility 
  * to map strings containing valid color names to the respective colors via the stringToColor method.
- * @author 6runge
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
  *
  */
 public enum MyColor {

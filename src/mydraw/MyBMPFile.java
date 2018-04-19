@@ -4,6 +4,7 @@ import java.io.*;
 import java.awt.image.*; 
 
 /** Import and export Windows bitmap (*.bmp) images
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
 */
 public class MyBMPFile extends Component { 
 

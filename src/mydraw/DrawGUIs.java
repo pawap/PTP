@@ -14,7 +14,11 @@ import com.sun.xml.internal.ws.util.StringUtils;
 
 
 
-/** This class implements the GUI for our application */
+/** This class implements the GUI for our application 
+ * 
+ * @author ptp18-d06(Pawel Rasch, Tim Runge)
+ *
+ */
 class DrawGUIs extends JFrame {
 	Draw app; // A reference to the application, to send commands to.
 	Color fgColor, bgColor;
