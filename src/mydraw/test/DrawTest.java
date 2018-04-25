@@ -17,7 +17,7 @@ import mydraw.ColorException;
 import mydraw.Draw;
 import mydraw.MyColor;
 
-/**
+/**The test class for the MyDraw App
  * @author ptp18-d06(Pawel Rasch, Tim Runge)
  *
  */
@@ -100,10 +100,12 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#setHeight(int)}.
+	 * Checks if setHeight() works as intended.
 	 */
 	@Test
 	public void testSetHeight() {
 		Draw draw = new Draw(Color.black, Color.white, 1, 400, 320);
+		assertNotEquals(draw.getHeight(),555);
 		draw.setHeight(555);
 		assertEquals(draw.getHeight(),555);
 		
@@ -120,6 +122,7 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#getFGColor()}.
+	 * Checks if getFGColor() returns the correct color.
 	 */
 	@Test
 	public void testGetFGColor() {
@@ -133,7 +136,6 @@ public class DrawTest {
 		try {
 			draw.setFGColor("green");
 		} catch (ColorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("Testcolor : green not accepted as FG Color");
 		}
@@ -142,6 +144,7 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#getBGColor()}.
+	 * Checks if getBGColor() returns the correct color.
 	 */
 	@Test
 	public void testGetBGColor() {
@@ -153,7 +156,6 @@ public class DrawTest {
 		try {
 			draw.setBGColor("green");
 		} catch (ColorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("Testcolor : green not accepted as BG Color");
 		}
@@ -162,6 +164,7 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#setFGColor(java.lang.String)}.
+	 * Tests if SetFGColor sets the correct color and throws the correct exception for invalid input.
 	 * @throws ColorException 
 	 */
 	@Test
@@ -188,6 +191,7 @@ public class DrawTest {
 
 	/**
 	 * Test method for {@link mydraw.Draw#setBGColor(java.lang.String)}.
+	 * Tests if SetFGColor sets the correct color and throws the correct exception for invalid input.
 	 * @throws ColorException 
 	 */
 	@Test
@@ -209,6 +213,10 @@ public class DrawTest {
 		assertEquals(img.getRGB(10, 10),Color.BLACK.getRGB());
 		assertNotEquals(img.getRGB(20, 20),Color.WHITE.getRGB());
 	}
+	
+	/**
+	 * Creates an image with the autoDraw() method and compares the result with a reference image.
+	 */
 	@Test
 	public void testDrawing() {
 		Draw draw = new Draw();
