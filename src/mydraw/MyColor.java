@@ -8,8 +8,8 @@ import java.awt.Color;
  * @author ptp18-d06(Pawel Rasch, Tim Runge)
  *
  */
-public enum MyColor {
-	BLACK, GREEN, RED, BLUE, WHITE; 
+public class MyColor {
+	final static String[] valid_colors = {"Black", "Green", "Red", "Blue", "White"};
 
 	/**
 	 * checks if the input string can be mapped to one of the MyColor colors.
@@ -17,9 +17,9 @@ public enum MyColor {
 	 * @return true if the input matches a valid color
 	 */
 	public static boolean isAColor(String str) {
-		String string = str.toUpperCase();
-		for (MyColor c : MyColor.values()) {
-			if (c.toString().equals(string)) {
+		String input = str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+		for (String val_col : valid_colors) {
+			if (val_col.toString().equals(input)) {
 				return true;
 			}
 		}
@@ -62,11 +62,9 @@ public enum MyColor {
 	 */
 	public static String colorToString(Color col) {
 		try {
-			for (MyColor mc : MyColor.values()) {
-				String col_str = mc.toString();
-
+			for (String col_str : valid_colors) {
 				if (col.equals(stringToColor(col_str))) {
-					return col_str.substring(0, 1).toUpperCase() + col_str.substring(1).toLowerCase();
+					return col_str;
 				}
 			}
 		}
