@@ -26,7 +26,12 @@ public class MyColor {
 		return false;
 	}
 
-
+	/**
+	 * If the input string can be mapped to one of the valid colors, the corresponding color will be returned.
+	 * @param str member of {"Black", "Green", "Red", "Blue", "White"} (case insensitive)
+	 * @return the color corresponding to the input String
+	 * @throws ColorException
+	 */
 	public static Color stringToColor(String str) throws ColorException{
 
 		String col = str.toUpperCase();
