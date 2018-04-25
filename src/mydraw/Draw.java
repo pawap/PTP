@@ -1,7 +1,5 @@
 package mydraw;
-/**
- * @author ptp18-d06(Pawel Rasch, Tim Runge)
- */
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -16,7 +14,9 @@ import java.util.LinkedList;
 import javax.swing.*; //++
 
 
-/** The application class. Processes high-level commands sent by GUI */
+/** The application class. Processes high-level commands sent by GUI 
+ *@author ptp18-d06(Pawel Rasch, Tim Runge) 
+ */
 public class Draw {
 	
 	protected DrawGUIs window; //the GUI
@@ -29,12 +29,21 @@ public class Draw {
 	}
 
 	/** Application constructor:  
-	 * creates an instance of our GUI class and initializes the default colors. 
+	 * creates an instance of our GUI class and initializes the default colors and sizes. 
 	 */
 	public Draw() {
 		this(Color.black, Color.white, 1, 400, 320);
 	}
 	
+	/**
+	 * Application constructor:
+	 * creates an instance of the GUI class with the specified colors and sizes.
+	 * @param fg the initial drawing color
+	 * @param bg the initial background color
+	 * @param pSize the initial pen size
+	 * @param w the initial width of the DrawingArea
+	 * @param h the initial height of the DrawingArea
+	 */
 	public Draw(Color fg, Color bg, int pSize, int w, int h) {
 		window = new DrawGUIs(this, fg, bg, pSize, w, h);
 		
@@ -84,7 +93,6 @@ public class Draw {
 	        }
 		}
 	}
-	// TODO add javadoc & other comments!
 	/**
 	 * returns the image drawn on the GUI
 	 * @return the current image
@@ -104,7 +112,7 @@ public class Draw {
 	}
 
 	/**
-     * Read a Windows bitmap file (*.bmp) 
+     * Reads a Windows bitmap file (*.bmp) 
      * @param filename the image's file name
      * @return the image read 
 	 * @throws IOException
@@ -132,7 +140,7 @@ public class Draw {
 	} 
 
 	/**
-	 * connects the points it receives with lines on the drawing area.
+	 * Connects the points it receives with lines on the drawing area.
 	 * @param points a list of points that you want to be connected by lines
 	 */
 	public void drawPolyLine(java.util.List<Point> points) {
@@ -140,7 +148,7 @@ public class Draw {
 	}
 	
 	/**
-	 * draws a predefined image onto the drawing area using every available color
+	 * Draws a predefined image onto the drawing area using every available color
 	 * and every available drawing method.
 	 */
 	public void autoDraw() {
