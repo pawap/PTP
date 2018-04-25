@@ -27,12 +27,23 @@ class DrawGUIs extends JFrame {
 	JSizeMenu sizeMenu;
 	Choice bg_color_chooser;
 
-	public DrawGUIs(Draw application) {
-		this(application, Color.black, Color.white, 1, 400, 320);
-	}
 	/**
 	 * The GUI constructor does all the work of creating the GUI and setting up
 	 * event listeners. Note the use of local and anonymous classes.
+	 * @param application The Draw instance this GUI is supposed to work with.
+	 */
+	public DrawGUIs(Draw application) {
+		this(application, Color.black, Color.white, 1, 400, 320);
+	}
+
+	/**
+	 * This constructor lets you chose the initial colors and sizes
+	 * @param application The Draw instance this GUI is supposed to work with.
+	 * @param fg the initial drawing color
+	 * @param bg the initial background color
+	 * @param pSize the initial pen size
+	 * @param w the initial width of the DrawingArea
+	 * @param h the initial height of the DrawingArea
 	 */
 	public DrawGUIs(Draw application, Color fg, Color bg, int pSize, int w, int h) {
 		super("Draw"); // Create the window
@@ -54,7 +65,7 @@ class DrawGUIs extends JFrame {
 		color_chooser.add("Red");
 		color_chooser.add("Blue");
 		color_chooser.select(MyColor.colorToString(fgColor));
-		
+
 		// selector for the background color
 		bg_color_chooser = new Choice();
 		bg_color_chooser.add("White");
@@ -63,7 +74,7 @@ class DrawGUIs extends JFrame {
 		bg_color_chooser.add("Red");
 		bg_color_chooser.add("Blue"); 
 		bg_color_chooser.select(MyColor.colorToString(bgColor));
-		
+
 		// slider to change the pencil size
 		JSlider pencil_size_slider = new JSlider(1,20);
 		pencil_size_slider.setValue(pencilSize);
@@ -71,7 +82,7 @@ class DrawGUIs extends JFrame {
 		pencil_size_slider.setPaintLabels(true);
 		pencil_size_slider.setMajorTickSpacing(7);
 		pencil_size_slider.setMinorTickSpacing(1);
-		
+
 		// Create menu buttons
 		JButton clear = new JButton("Clear");
 		JButton quit = new JButton("Quit");
@@ -106,7 +117,7 @@ class DrawGUIs extends JFrame {
 		drawingArea.getImageGraphics().fillRect(0,0, w, h);
 		drawingArea.setBackground(bgColor);
 		drawingArea.setLayout(new BorderLayout());
-		
+
 		// Setup SizeMenu
 		sizeMenu = new JSizeMenu(new Dimension(w, h));
 		imageMenu.add(sizeMenu);
@@ -162,6 +173,9 @@ class DrawGUIs extends JFrame {
 
 		shape_chooser.addItemListener(new ShapeManager(this));
 
+		/**
+		 * Listener class for the color choosing menu.
+		 */
 		class ColorItemListener implements ItemListener {
 
 			// user selected new color => store new color in DrawGUIs
@@ -177,8 +191,12 @@ class DrawGUIs extends JFrame {
 				}
 			}
 		}		
-		
+
 		color_chooser.addItemListener(new ColorItemListener());
+		
+		/**
+		 * Listener class for the background color choosing menu.
+		 */
 		class BGColorItemListener implements ItemListener {
 
 			// user selected new bgColor => store new bgColor in DrawGUIs
@@ -186,26 +204,28 @@ class DrawGUIs extends JFrame {
 				try {
 					app.setBGColor((String) e.getItem());
 				} catch (ColorException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		}
 		bg_color_chooser.addItemListener(new BGColorItemListener());
-		
+
+		/**
+		 * Listener class for the pen size slider.
+		 */
 		class SliderListener implements ChangeListener {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				JSlider slider = (JSlider) e.getSource();
 				pencilSize = slider.getValue();
-				
+
 			}
-			
+
 		}
-		
+
 		pencil_size_slider.addChangeListener(new SliderListener());
-		
+
 		// Handle the window close request similarly
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -219,10 +239,18 @@ class DrawGUIs extends JFrame {
 		this.setVisible(true); // ++
 	}
 
+	/**
+	 * Returns the current background color.
+	 * @return the current background color
+	 */
 	public Color getBGColor() {
 		return bgColor;
 	}
 
+	/**
+	 * Sets the current background color to a new color.
+	 * @param bgColor the new background color
+	 */
 	public void setBGColor(Color bgColor) {
 		String colorStr = MyColor.colorToString(bgColor).toLowerCase();
 		colorStr = StringUtils.capitalize(colorStr);
@@ -323,10 +351,10 @@ class DrawGUIs extends JFrame {
 			for (int y = 0; y < image.getHeight(null); ++y) {
 				if (image.getRGB(x, y) == getBGColor().getRGB()){
 					image.setRGB(x, y, new_col.getRGB());
-					
+
 				}
 			}
 		}
-		
+
 	}
 }
